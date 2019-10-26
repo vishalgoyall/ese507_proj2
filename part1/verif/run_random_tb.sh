@@ -1,3 +1,4 @@
+rm -r work
 echo "++++++++++++ START COMPILATION ++++++++++"
 vlog -f ../rtl_file_list part1_random_tb.sv
 echo "++++++++++++ COMPILATION DONE ++++++++++"

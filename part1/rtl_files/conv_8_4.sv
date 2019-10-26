@@ -3,7 +3,7 @@
 // Authors : Prateek Jain and Vishal Goyal
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-module conv_8_4 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, parameter X_SIZE = 8, parameter F_SIZE = 4) (
+module conv_8_4 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, parameter X_SIZE = 8, parameter F_SIZE = 4, parameter ACC_SIZE = 18) (
 	input clk, 
 	input reset, 
 	input s_valid_x, 
@@ -14,7 +14,7 @@ module conv_8_4 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, parame
 	output logic s_ready_f, 
 	output logic s_ready_x,
 	output logic m_valid_y, 
-	output logic signed [DATA_WIDTH_X+DATA_WIDTH_F+1:0] m_data_out_y
+	output logic signed [ACC_SIZE-1:0] m_data_out_y
 );
 
 //logic and parameter declarations
@@ -43,8 +43,8 @@ logic conv_start, conv_pre_start;
 logic conv_done;
 
 logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f;
-logic signed [DATA_WIDTH_X+DATA_WIDTH_F+1:0] accum_in;
-logic signed [DATA_WIDTH_X+DATA_WIDTH_F+1:0] accum_out;
+logic signed [ACC_SIZE-1:0] accum_in;
+logic signed [ACC_SIZE-1:0] accum_out;
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -151,19 +151,22 @@ logic signed [DATA_WIDTH_X+DATA_WIDTH_F+1:0] accum_out;
 // MAC unit of design
 // It uses signals coming from control convolution module to accumulate and reset
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-assign x_mult_f = xmem_data*fmem_data;  //multiply xmem data with f mem data
-assign accum_in = accum_out + {{2{x_mult_f[$left(x_mult_f)]}} , x_mult_f};  //sign extending multiplier output to match adder dimensions
+// multiply xmem data with f mem data
+   assign x_mult_f = xmem_data*fmem_data;  
 
-always_ff @(posedge clk) begin
-	if (reset == 1'b1 || reset_accum == 1'b1) begin
-		accum_out <= 0;
-	end
-	else if (en_accum == 1'b1) begin
-		accum_out <= accum_in;
-	end
-end
+// sign extending multiplier output to match adder dimensions
+   assign accum_in = accum_out + {{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[$left(x_mult_f)]}} , x_mult_f};  
 
-assign m_data_out_y = accum_out;   //send output data from accumulator output
+   always_ff @(posedge clk) begin
+   	if (reset == 1'b1 || reset_accum == 1'b1) begin
+   		accum_out <= 0;
+   	end
+   	else if (en_accum == 1'b1) begin
+   		accum_out <= accum_in;
+   	end
+   end
+
+  assign m_data_out_y = accum_out;   //send output data from accumulator output
 
 
 endmodule
