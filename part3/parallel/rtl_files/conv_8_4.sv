@@ -30,7 +30,7 @@ logic [X_MEM_ADDR_WIDTH-1:0] xmem_addr;
 logic xmem_wr_en;
 logic xmem_reset;
 logic [X_MEM_ADDR_WIDTH-1:0] load_xaddr_val;
-logic signed [DATA_WIDTH_X-1:0] xmem_data;
+logic signed [X_SIZE-1:0][DATA_WIDTH_X-1:0] xmem_data;
 
 logic fmem_full;
 logic fmem_addr_wr_ctrl;
@@ -38,7 +38,7 @@ logic fmem_addr_rd_ctrl;
 logic [F_MEM_ADDR_WIDTH-1 :0] fmem_addr;
 logic fmem_wr_en;
 logic fmem_reset;
-logic signed [DATA_WIDTH_F-1:0] fmem_data;
+logic signed [F_SIZE-1:0][DATA_WIDTH_F-1:0] fmem_data;
 
 logic conv_start, conv_pre_start;
 logic conv_done;
