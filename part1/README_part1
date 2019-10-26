@@ -14,11 +14,11 @@
 2. rtl_file_list :
 	File list of all RTL design files
 
-3. tb/: contains all tb related files
+3. *.hex files and part1_*_tb.sv files picked from instructor's path.
 
 4. run_simple_tb.sh : shell script to compile simple tb file and run sims using simple tb
-	>>./run_simple_tb.sh  [TO run the script]
+	>>./run_simple_tb.sh <gui/non>   [Add gui to run in gui mode, else run in bash mode]
 
 5. run_random_tb.sh : shell script to compile random tb file and run sims using random tb
-	>>./run_random_tb.sh <seed_value>  [To run the script]
+	>>./run_random_tb.sh ,gui/non> <seed_value>  [Add different seeds to randomize]
 
