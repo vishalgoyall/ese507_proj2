@@ -20,6 +20,7 @@ module conv_8_4 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, parame
 //logic and parameter declarations
 parameter X_MEM_ADDR_WIDTH = $clog2(X_SIZE);  //bus width for x mem addr
 parameter F_MEM_ADDR_WIDTH = $clog2(F_SIZE);  //bus width for f mem addr
+parameter logic [F_MEM_ADDR_WIDTH-1:0] load_faddr_val = 0;
 
 logic xmem_full;
 logic xmem_addr_wr_ctrl;
@@ -38,7 +39,7 @@ logic fmem_wr_en;
 logic fmem_reset;
 logic signed [DATA_WIDTH_F-1:0] fmem_data;
 
-logic conv_start;
+logic conv_start, conv_pre_start;
 logic conv_done;
 
 logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f;
@@ -88,7 +89,6 @@ logic signed [DATA_WIDTH_X+DATA_WIDTH_F+1:0] accum_out;
   //Conv_done is a one cycle pulse generated after convolution is complete
   assign fmem_reset = reset || conv_done;   
    
-  parameter logic [F_MEM_ADDR_WIDTH-1:0] load_faddr_val = 0;
   //ctrl module instantiation
   ctrl_mem_write #(.MEM_ADDR_WIDTH(F_MEM_ADDR_WIDTH), .MEM_SIZE(F_SIZE)) ctrl_fmem_write_inst (
 	  .clk               (clk),  
@@ -121,7 +121,13 @@ logic signed [DATA_WIDTH_X+DATA_WIDTH_F+1:0] accum_out;
 // Control Module for Convulation and AXI on output with master
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  
-  assign conv_start = xmem_full && fmem_full;
+ always_ff @(posedge clk) begin
+	if (reset == 1'b1)
+		conv_pre_start <= 1'b0;
+	else 
+		conv_pre_start <= xmem_full && fmem_full;  //one cycle delay required to flush out X from memory during read start
+ end
+ assign conv_start = conv_pre_start && xmem_full && fmem_full;
 
   ctrl_conv_output #(.F_MEM_SIZE(F_SIZE), .X_MEM_SIZE(X_SIZE), .X_MEM_ADDR_WIDTH(X_MEM_ADDR_WIDTH), .F_MEM_ADDR_WIDTH(F_MEM_ADDR_WIDTH))
   ctrl_conv_output_inst (
@@ -150,10 +156,10 @@ assign accum_in = accum_out + {{2{x_mult_f[$left(x_mult_f)]}} , x_mult_f};  //si
 
 always_ff @(posedge clk) begin
 	if (reset == 1'b1 || reset_accum == 1'b1) begin
-		accum_out = 0;
+		accum_out <= 0;
 	end
 	else if (en_accum == 1'b1) begin
-		accum_out = accum_in;
+		accum_out <= accum_in;
 	end
 end
 
