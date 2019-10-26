@@ -1,13 +1,14 @@
+rm -r work
 echo "++++++++++++ START COMPILATION ++++++++++"
-vlog -f rtl_file_list part1_simple_tb.sv
+vlog -f ../rtl_file_list part1_random_tb.sv
 echo "++++++++++++ COMPILATION DONE ++++++++++"
 
 echo "++++++++++++ Launch TestBench ++++++++++"
 if [ $1 = 'gui' ]; 
 then
-	vsim check_timing +acc
+	vsim tbench1 +acc
 else
-	vsim check_timing -c -do "run -all" 
+	vsim tbench1 -sv_seed $2 -c -do "run -all" 
 fi
 echo "++++++++++++ Exit TestBench ++++++++++"
 
