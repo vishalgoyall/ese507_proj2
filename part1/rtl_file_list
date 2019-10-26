@@ -1,0 +1,4 @@
+/home/home4/pmilder/ese507/proj2/memory.sv
+./rtl_files/ctrl_conv_output.sv
+./rtl_files/ctrl_mem_write.sv
+./rtl_files/conv_8_4.sv
