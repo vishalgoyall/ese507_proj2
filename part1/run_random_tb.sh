@@ -7,7 +7,7 @@ if [ $1 = 'gui' ];
 then
 	vsim tbench1 +acc
 else
-	vsim tbench1 -c -do "run -all" 
+	vsim tbench1 -sv_seed $2 -c -do "run -all" 
 fi
 echo "++++++++++++ Exit TestBench ++++++++++"
 
