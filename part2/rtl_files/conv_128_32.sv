@@ -1,9 +1,16 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ESE 507 : Project 2 (Convolution)
 // Authors : Prateek Jain and Vishal Goyal
+// Description: This is the top level module for convolution of X (128) and F (32)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-module conv_128_32 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, parameter X_SIZE = 128, parameter F_SIZE = 32, parameter ACC_SIZE = 21) (
+module conv_128_32 #(
+	parameter int DATA_WIDTH_X = 8, 
+	parameter int DATA_WIDTH_F = 8, 
+	parameter int X_SIZE = 128, 
+	parameter int F_SIZE = 32, 
+	parameter int ACC_SIZE = 21
+) (
 	input clk, 
 	input reset, 
 	input s_valid_x, 
@@ -18,9 +25,9 @@ module conv_128_32 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, par
 );
 
 //logic and parameter declarations
-parameter X_MEM_ADDR_WIDTH = $clog2(X_SIZE);  //bus width for x mem addr
-parameter F_MEM_ADDR_WIDTH = $clog2(F_SIZE);  //bus width for f mem addr
-parameter logic [F_MEM_ADDR_WIDTH-1:0] load_faddr_val = 0;
+localparam X_MEM_ADDR_WIDTH = $clog2(X_SIZE);  //bus width for x mem addr
+localparam F_MEM_ADDR_WIDTH = $clog2(F_SIZE);  //bus width for f mem addr
+localparam logic [F_MEM_ADDR_WIDTH-1:0] load_faddr_val = 0;
 
 logic xmem_full;
 logic xmem_addr_wr_ctrl;
@@ -45,6 +52,13 @@ logic conv_done;
 logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f;
 logic signed [ACC_SIZE-1:0] accum_in;
 logic signed [ACC_SIZE-1:0] accum_out;
+
+logic load_xaddr; 
+logic en_xaddr_incr; 
+logic load_faddr; 
+logic en_faddr_incr;
+logic reset_accum; 
+logic en_accum;
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -155,7 +169,7 @@ logic signed [ACC_SIZE-1:0] accum_out;
    assign x_mult_f = xmem_data*fmem_data;  
 
 // sign extending multiplier output to match adder dimensions
-   assign accum_in = accum_out + {{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[$left(x_mult_f)]}} , x_mult_f};  
+   assign accum_in = accum_out + signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[$left(x_mult_f)]}} , x_mult_f});  
 
    always_ff @(posedge clk) begin
    	if (reset == 1'b1 || reset_accum == 1'b1) begin

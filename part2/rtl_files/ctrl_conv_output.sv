@@ -99,12 +99,12 @@ always_ff @(posedge clk) begin
 
 		if (m_ready_y == 1'b1 && m_pre_valid == 1'b1 && m_valid_y == 1'b1)   //reset when ready is recieved
 			m_pre_valid <= 1'b0;
-		else if (fmem_addr == F_MEM_SIZE - 2 && conv_start == 1'b1)  //assert when 1 accumulation away from final result
+		else if (fmem_addr == unsigned'(F_MEM_SIZE - 2) && conv_start == 1'b1)  //assert when 1 accumulation away from final result
 			m_pre_valid <= 1'b1;
 
 		if (m_ready_y == 1'b1 && m_pre_valid_int == 1'b1 && m_valid_y == 1'b1)   //reset when ready is recieved
 			m_pre_valid_int <= 1'b0;
-		else if (fmem_addr == F_MEM_SIZE - 1 && conv_start == 1'b1)  //assert when 1 accumulation away from final result
+		else if (fmem_addr == unsigned'(F_MEM_SIZE - 1) && conv_start == 1'b1)  //assert when 1 accumulation away from final result
 			m_pre_valid_int <= 1'b1;
 
 		if (conv_done == 1'b1)   //reset after completion of convolution
@@ -112,7 +112,7 @@ always_ff @(posedge clk) begin
 		else if (m_pre_valid == 1'b1 && m_pre_valid_int == 1'b0) //detect only for rise edge of pre-valid, require to be stable before loading xaddr
 			cnt_conv <= cnt_conv + 1;
 
-		if (cnt_conv == X_MEM_SIZE - F_MEM_SIZE + 1 && m_valid_y == 1'b1 && m_ready_y == 1'b1)  //end of convolution
+		if (cnt_conv == unsigned'(X_MEM_SIZE - F_MEM_SIZE + 1) && m_valid_y == 1'b1 && m_ready_y == 1'b1)  //end of convolution
 		       conv_done <= 1'b1;
 	        else
 		       conv_done <= 1'b0;  //just generate a pulse
