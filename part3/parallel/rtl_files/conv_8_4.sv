@@ -135,49 +135,26 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 // It uses signals coming from control convolution module to accumulate and reset
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // multiply xmem data with f mem data
-// in case of parallel execution, getting values from different memory
-// locations at the same time
+// in case of parallel execution, getting values from different memory locations at the same time
+
    genvar i;
    generate for(i=0; i<F_SIZE; i++) begin : multiplier
 	assign x_mult_f[i] = xmem_data[i+load_xaddr_val-1]*fmem_data[i];  
-// sign extending multiplier output to match adder dimensions
    end
    endgenerate
 
-/*  always @ (posedge clk)
-  begin
-	if (reset == 1) begin
-		accum_in <= 'b0;
-	end else begin
-		integer j;
-		for(j=0; j<F_SIZE; j++) begin
-			accum_in <= accum_in + {{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[j][$left(x_mult_f)]}} , x_mult_f[j]};  
-		end
-   	end
-   end*/
-  
-  integer j;
-  always_comb begin
+   // Logic to add down x_mult_f[n] for all n
+   integer j;
+   always_comb begin
 	  for(j=0; j<F_SIZE; j++) begin
 		  if (j == 0)
 			  accum_in[0] = x_mult_f[0];
 		  else
 			  accum_in[j] = accum_in[j-1] + x_mult_f[j];
 	  end
-  end
-   
+   end
 
-   /*always_ff @(posedge clk) begin
-   	if (reset == 1'b1 || reset_accum == 1'b1) begin
-   		accum_out <= 0;
-   	end
-   	else if (en_accum == 1'b1) begin
-   		accum_out <= accum_in;
-   	end
-   end*/
-
-  assign m_data_out_y = accum_in[F_SIZE-1];   //send output data from accumulator output
-
+   assign m_data_out_y = accum_in[F_SIZE-1];   //send output data from accumulator output
 
 endmodule
 

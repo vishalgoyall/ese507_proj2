@@ -3,11 +3,10 @@
 // Authors : Prateek Jain and Vishal Goyal
 // Purpose :
 // Control Module to 
-// 1. generate signals required to fetch data from memories
+// 1. generate signal to provide select line for MUX on X_mem output for conv
 // 2. generate signals to control MAC operations
 // 3. generate valid signal for AXI interface
 //
-// Note : design reuses counters present in ctrl_mem_write modules for addr generation
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 module ctrl_conv_output #(parameter F_MEM_SIZE = 4, parameter X_MEM_SIZE = 8, parameter X_MEM_ADDR_WIDTH = 3, parameter F_MEM_ADDR_WIDTH = 2) (
@@ -23,6 +22,9 @@ module ctrl_conv_output #(parameter F_MEM_SIZE = 4, parameter X_MEM_SIZE = 8, pa
 logic	next_conv;
 logic	conv_start_pulse, conv_start_reg;
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Generating pulse on the rise edge of conv start to kick-start the conv
+
 always @ (posedge clk) begin
 	if (reset == 1)
 		conv_start_reg <= 0;
@@ -30,6 +32,10 @@ always @ (posedge clk) begin
 		conv_start_reg <= conv_start;
 end
 assign conv_start_pulse = conv_start && !conv_start_reg;
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Logic to assert next_conv request; asserted once previous calculation has
+// been accepted
 
 always_comb begin
 	next_conv = 0;
@@ -41,6 +47,9 @@ always_comb begin
 		end
 	end
 end
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Logic to assert valid_y and incrementing the start address of x
 
 always @ (posedge clk) begin
 	if (reset == 1) begin
@@ -57,19 +66,9 @@ always @ (posedge clk) begin
 	end
 end
 
-// Setting convolution done flag once second last entry has been processed
-/*
-always @ (posedge clk) begin
-	if (reset == 1)
-		conv_done <= 0;
-	else begin
-		if (load_xaddr_val == X_MEM_SIZE-F_MEM_SIZE)
-			conv_done <= 1;
-		else
-			conv_done <= 0;
-	end
-end
-*/
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Setting convolution done flag once last entry has been processed and system
+// is ready to accept the last entry
 
 assign conv_done = (load_xaddr_val == X_MEM_SIZE-F_MEM_SIZE+1) && next_conv;
 
