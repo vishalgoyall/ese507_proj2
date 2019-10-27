@@ -4,7 +4,7 @@
 // Description: This is the top level module for convolution of X (8) and F (4)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-module conv_8_4 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, parameter X_SIZE = 8, parameter F_SIZE = 4, parameter ACC_SIZE = 18) (
+module conv_128_32 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, parameter X_SIZE = 128, parameter F_SIZE = 32, parameter ACC_SIZE = 21) (
 	input clk, 
 	input reset, 
 	input s_valid_x, 

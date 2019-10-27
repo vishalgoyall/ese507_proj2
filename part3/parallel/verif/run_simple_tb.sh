@@ -1,6 +1,6 @@
 rm -r work
 echo "++++++++++++ START COMPILATION ++++++++++"
-vlog -f ../rtl_file_list part1_simple_tb.sv
+vlog -f ../rtl_file_list part2_simple_tb.sv
 echo "++++++++++++ COMPILATION DONE ++++++++++"
 
 echo "++++++++++++ Launch TestBench ++++++++++"
