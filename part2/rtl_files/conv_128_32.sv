@@ -1,15 +1,15 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ESE 507 : Project 2 (Convolution)
 // Authors : Prateek Jain and Vishal Goyal
-// Description: This is the top level module for convolution of X (8) and F (4)
+// Description: This is the top level module for convolution of X (128) and F (32)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-module conv_8_4 #(
+module conv_128_32 #(
 	parameter int DATA_WIDTH_X = 8, 
 	parameter int DATA_WIDTH_F = 8, 
-	parameter int X_SIZE = 8, 
-	parameter int F_SIZE = 4, 
-	parameter int ACC_SIZE = 18
+	parameter int X_SIZE = 128, 
+	parameter int F_SIZE = 32, 
+	parameter int ACC_SIZE = 21
 ) (
 	input clk, 
 	input reset, 
