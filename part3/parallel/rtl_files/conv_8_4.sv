@@ -139,7 +139,7 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 
    genvar i;
    generate for(i=0; i<F_SIZE; i++) begin : multiplier
-	assign x_mult_f[i] = xmem_data[i+load_xaddr_val-1]*fmem_data[i];  
+	assign x_mult_f[i] = xmem_data[i+load_xaddr_val]*fmem_data[i];  
    end
    endgenerate
 

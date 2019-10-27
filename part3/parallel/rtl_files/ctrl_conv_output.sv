@@ -59,9 +59,13 @@ always @ (posedge clk) begin
 		if (conv_done == 1) begin
 			load_xaddr_val <= 'b0;
 			m_valid_y <= 0;
-		end else if (next_conv == 1 || conv_start_pulse == 1) begin
-			load_xaddr_val <= load_xaddr_val + 1;
-			m_valid_y <= 1;
+		end else begin
+			if (conv_start_pulse == 1) begin
+				m_valid_y <= 1;
+			end else if (next_conv == 1) begin
+				load_xaddr_val <= load_xaddr_val + 1;
+				m_valid_y <= 1;
+			end
 		end
 	end
 end
@@ -70,7 +74,7 @@ end
 // Setting convolution done flag once last entry has been processed and system
 // is ready to accept the last entry
 
-assign conv_done = (load_xaddr_val == X_MEM_SIZE-F_MEM_SIZE+1) && next_conv;
+assign conv_done = (load_xaddr_val == X_MEM_SIZE-F_MEM_SIZE) && next_conv;
 
 
 endmodule
