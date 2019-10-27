@@ -17,8 +17,6 @@ module ctrl_conv_output #(parameter F_MEM_SIZE = 4, parameter X_MEM_SIZE = 8, pa
         input                                 m_ready_y,       
         output logic                          conv_done,       
 	output logic [X_MEM_ADDR_WIDTH-1:0]   load_xaddr_val,
-        output logic                          reset_accum,  
-        output logic                          en_accum,        
         output logic                          m_valid_y       
 );
 
@@ -60,6 +58,7 @@ always @ (posedge clk) begin
 end
 
 // Setting convolution done flag once second last entry has been processed
+/*
 always @ (posedge clk) begin
 	if (reset == 1)
 		conv_done <= 0;
@@ -70,6 +69,9 @@ always @ (posedge clk) begin
 			conv_done <= 0;
 	end
 end
+*/
+
+assign conv_done = (load_xaddr_val == X_MEM_SIZE-F_MEM_SIZE+1) && next_conv;
 
 
 endmodule

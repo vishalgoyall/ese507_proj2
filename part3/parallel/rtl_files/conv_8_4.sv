@@ -24,8 +24,6 @@ parameter F_MEM_ADDR_WIDTH = $clog2(F_SIZE);  //bus width for f mem addr
 parameter logic [F_MEM_ADDR_WIDTH-1:0] load_faddr_val = 0;
 
 logic xmem_full;
-logic xmem_addr_wr_ctrl;
-logic xmem_addr_rd_ctrl;
 logic [X_MEM_ADDR_WIDTH-1:0] xmem_addr;
 logic xmem_wr_en;
 logic xmem_reset;
@@ -33,8 +31,6 @@ logic [X_MEM_ADDR_WIDTH-1:0] load_xaddr_val;
 logic signed [DATA_WIDTH_X-1:0] xmem_data [X_SIZE-1:0];
 
 logic fmem_full;
-logic fmem_addr_wr_ctrl;
-logic fmem_addr_rd_ctrl;
 logic [F_MEM_ADDR_WIDTH-1 :0] fmem_addr;
 logic fmem_wr_en;
 logic fmem_reset;
@@ -45,7 +41,6 @@ logic conv_done;
 
 logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f [F_SIZE-1:0];
 logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
-logic signed [ACC_SIZE-1:0] accum_out;
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -131,8 +126,6 @@ logic signed [ACC_SIZE-1:0] accum_out;
 	  .conv_start      (conv_start),
 	  .conv_done       (conv_done),
 	  .load_xaddr_val  (load_xaddr_val),
-	  .reset_accum     (reset_accum),
-	  .en_accum        (en_accum),
 	  .m_ready_y       (m_ready_y),
 	  .m_valid_y       (m_valid_y)
   );
