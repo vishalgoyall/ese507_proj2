@@ -9,9 +9,6 @@ module ctrl_mem_write #(parameter MEM_ADDR_WIDTH = 3, parameter MEM_SIZE = 8) (
         input                             clk,  
         input                             reset,
         input                             s_valid,
-	input                             ext_load_addr,
-	input        [MEM_ADDR_WIDTH-1:0] ext_load_addr_val,
-	input                             ext_incr_addr,
 	input                             en_ext_ctrl,
         output logic                      s_ready,
         output logic [MEM_ADDR_WIDTH-1:0] mem_addr,
@@ -33,12 +30,6 @@ always_ff @(posedge clk) begin
 		        	mem_addr <= 0;
 	                else if (mem_wr_en == 1'b1)  //else if wr_en is asserted, keep on incrementing the address to point to next mem location
 		               mem_addr <= mem_addr + 1;	 
-		end
-		else begin
-			if (ext_load_addr == 1'b1)   //load with approprate mem address
-				mem_addr <= ext_load_addr_val; 
-			else if (ext_incr_addr == 1'b1)  //incr mem address
-				mem_addr <= mem_addr + 1;
 		end
 	end
 end

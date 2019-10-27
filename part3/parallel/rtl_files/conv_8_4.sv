@@ -30,7 +30,7 @@ logic [X_MEM_ADDR_WIDTH-1:0] xmem_addr;
 logic xmem_wr_en;
 logic xmem_reset;
 logic [X_MEM_ADDR_WIDTH-1:0] load_xaddr_val;
-logic signed [X_SIZE-1:0][DATA_WIDTH_X-1:0] xmem_data;
+logic signed [DATA_WIDTH_X-1:0] xmem_data [X_SIZE-1:0];
 
 logic fmem_full;
 logic fmem_addr_wr_ctrl;
@@ -38,13 +38,13 @@ logic fmem_addr_rd_ctrl;
 logic [F_MEM_ADDR_WIDTH-1 :0] fmem_addr;
 logic fmem_wr_en;
 logic fmem_reset;
-logic signed [F_SIZE-1:0][DATA_WIDTH_F-1:0] fmem_data;
+logic signed [DATA_WIDTH_F-1:0] fmem_data [F_SIZE-1:0];
 
 logic conv_start, conv_pre_start;
 logic conv_done;
 
-logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f;
-logic signed [ACC_SIZE-1:0] accum_in;
+logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f [F_SIZE-1:0];
+logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 logic signed [ACC_SIZE-1:0] accum_out;
 
 
@@ -63,9 +63,6 @@ logic signed [ACC_SIZE-1:0] accum_out;
 	  .s_ready           (s_ready_x),
 	  .mem_addr          (xmem_addr),
 	  .en_ext_ctrl       (conv_start),
-	  .ext_load_addr     (load_xaddr),
-	  .ext_load_addr_val (load_xaddr_val),
-	  .ext_incr_addr     (en_xaddr_incr),
 	  .mem_wr_en         (xmem_wr_en)
   );
 
@@ -98,9 +95,6 @@ logic signed [ACC_SIZE-1:0] accum_out;
 	  .s_ready           (s_ready_f),
 	  .mem_addr          (fmem_addr),
 	  .en_ext_ctrl       (conv_start),
-	  .ext_load_addr     (load_faddr),
-	  .ext_load_addr_val (load_faddr_val),
-	  .ext_incr_addr     (en_faddr_incr),
 	  .mem_wr_en         (fmem_wr_en)
   );
 
@@ -136,14 +130,9 @@ logic signed [ACC_SIZE-1:0] accum_out;
 	  .reset           (reset),
 	  .conv_start      (conv_start),
 	  .conv_done       (conv_done),
-	  .load_xaddr      (load_xaddr),
-	  .en_xaddr_incr   (en_xaddr_incr),
-	  .load_faddr      (load_faddr),
-	  .en_faddr_incr   (en_faddr_incr),
 	  .load_xaddr_val  (load_xaddr_val),
 	  .reset_accum     (reset_accum),
 	  .en_accum        (en_accum),
-	  .fmem_addr       (fmem_addr),
 	  .m_ready_y       (m_ready_y),
 	  .m_valid_y       (m_valid_y)
   );
@@ -153,21 +142,48 @@ logic signed [ACC_SIZE-1:0] accum_out;
 // It uses signals coming from control convolution module to accumulate and reset
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // multiply xmem data with f mem data
-   assign x_mult_f = xmem_data*fmem_data;  
-
+// in case of parallel execution, getting values from different memory
+// locations at the same time
+   genvar i;
+   generate for(i=0; i<F_SIZE; i++) begin : multiplier
+	assign x_mult_f[i] = xmem_data[i+load_xaddr_val-1]*fmem_data[i];  
 // sign extending multiplier output to match adder dimensions
-   assign accum_in = accum_out + {{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[$left(x_mult_f)]}} , x_mult_f};  
+   end
+   endgenerate
 
-   always_ff @(posedge clk) begin
+/*  always @ (posedge clk)
+  begin
+	if (reset == 1) begin
+		accum_in <= 'b0;
+	end else begin
+		integer j;
+		for(j=0; j<F_SIZE; j++) begin
+			accum_in <= accum_in + {{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[j][$left(x_mult_f)]}} , x_mult_f[j]};  
+		end
+   	end
+   end*/
+  
+  integer j;
+  always_comb begin
+	  for(j=0; j<F_SIZE; j++) begin
+		  if (j == 0)
+			  accum_in[0] = x_mult_f[0];
+		  else
+			  accum_in[j] = accum_in[j-1] + x_mult_f[j];
+	  end
+  end
+   
+
+   /*always_ff @(posedge clk) begin
    	if (reset == 1'b1 || reset_accum == 1'b1) begin
    		accum_out <= 0;
    	end
    	else if (en_accum == 1'b1) begin
    		accum_out <= accum_in;
    	end
-   end
+   end*/
 
-  assign m_data_out_y = accum_out;   //send output data from accumulator output
+  assign m_data_out_y = accum_in[F_SIZE-1];   //send output data from accumulator output
 
 
 endmodule

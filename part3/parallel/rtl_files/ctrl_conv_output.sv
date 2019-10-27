@@ -1,5 +1,5 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// ESE 507 : Project 1 (Convolution)
+// ESE 507 : Project 2 (Convolution)
 // Authors : Prateek Jain and Vishal Goyal
 // Purpose :
 // Control Module to 
@@ -14,117 +14,62 @@ module ctrl_conv_output #(parameter F_MEM_SIZE = 4, parameter X_MEM_SIZE = 8, pa
         input                                 clk,            
         input                                 reset,           
         input                                 conv_start,     
-        input        [F_MEM_ADDR_WIDTH-1:0]   fmem_addr,       
         input                                 m_ready_y,       
         output logic                          conv_done,       
-        output logic                          load_xaddr,    
-        output logic                          en_xaddr_incr, 
-        output logic                          load_faddr,   
-        output logic                          en_faddr_incr, 
-        output logic [X_MEM_ADDR_WIDTH-1 : 0] load_xaddr_val, 
+	output logic [X_MEM_ADDR_WIDTH-1:0]   load_xaddr_val,
         output logic                          reset_accum,  
         output logic                          en_accum,        
         output logic                          m_valid_y       
 );
 
-logic [X_MEM_ADDR_WIDTH-1:0] cnt_conv;
-logic m_pre_valid, m_pre_valid_int, conv_start_accum;
+logic	next_conv;
+logic	conv_start_pulse, conv_start_reg;
 
-//Generate Control Signals for Address counters in memories 
+always @ (posedge clk) begin
+	if (reset == 1)
+		conv_start_reg <= 0;
+	else
+		conv_start_reg <= conv_start;
+end
+assign conv_start_pulse = conv_start && !conv_start_reg;
+
 always_comb begin
-    if (conv_start == 1'b1) begin   //if conv has not started then no action required
-	if (m_ready_y == 1'b1 && m_valid_y == 1'b1) begin //when data transaction is done at output and new computation is required
-		load_xaddr     = 1'b1;       //load xaddr counter for next conv calculation
-		load_faddr     = 1'b1;       //load faddr counter for next conv calculation
-		load_xaddr_val = cnt_conv;   //load xaddr counter with the starting address of next set to be done
-		en_xaddr_incr  = 1'b0;       //pause counter from being incremented
-		en_faddr_incr  = 1'b0;       //pause counter from being incremented
-	end
-	else if (m_pre_valid == 1'b1) begin
-         	load_xaddr     = 1'b0;       
-		load_faddr     = 1'b0;       
-		load_xaddr_val = cnt_conv;   //dont care
-		en_xaddr_incr  = 1'b0;       //pause counter from being incremented
-		en_faddr_incr  = 1'b0;       //pause counter from being incremented
-	end
-	else begin
-		load_xaddr     = 1'b0;       
-		load_faddr     = 1'b0;       
-		load_xaddr_val = cnt_conv;   //dont care
-		en_xaddr_incr  = 1'b1;       //pause counter from being incremented
-		en_faddr_incr  = 1'b1;       //pause counter from being incremented
-	end
-    end
-    else begin
-	load_xaddr     = 1'b0;       
-	load_faddr     = 1'b0;       
-	load_xaddr_val = 0;   
-	en_xaddr_incr  = 1'b0;  
-	en_faddr_incr  = 1'b0; 
-    end
-end
-
-
-//Generate control signals for accumulator in MAC engine
-always_comb begin 
-	if ((m_valid_y == 1'b1 && m_ready_y == 1'b1) || (conv_start_accum == 1'b0)) begin  //clear accum before starting new convolution
-		reset_accum = 1'b1;
-		en_accum    = 1'b0;
-	end
-	else if (m_valid_y == 1'b1 && conv_start_accum == 1'b1) begin  //hold accum till m_valid is set, m_valid deasserts with m_ready
-		reset_accum = 1'b0;
-		en_accum    = 1'b0;
-	end
-	else begin
-		reset_accum = 1'b0;
-		en_accum    = 1'b1;
+	next_conv = 0;
+	if (conv_start) begin
+		if (m_valid_y == 1 && m_ready_y == 1) begin
+			next_conv = 1;
+		end else if (m_valid_y == 1 && m_ready_y == 0) begin
+			next_conv = 0;
+		end
 	end
 end
 
-//Valid, Pre Valid, Convolution Done and Convolution tracker implementation
-always_ff @(posedge clk) begin
-	if (reset == 1'b1) begin
-		m_valid_y        <= 1'b0;  //valid signal for AXI
-		m_pre_valid      <= 1'b0;  //required to hold mem address with valid signal assertion
-		cnt_conv         <= 0;     //convolution tracker
-		conv_start_accum <= 1'b0;  //accum should start once cycle after first read from memory is done
-		m_pre_valid_int  <= 1'b0;
-		conv_done        <= 1'b0;  //final dine signal
+always @ (posedge clk) begin
+	if (reset == 1) begin
+		load_xaddr_val	<= 'b0;
+		m_valid_y	<= 'b0;
+	end else begin
+		if (conv_done == 1) begin
+			load_xaddr_val <= 'b0;
+			m_valid_y <= 0;
+		end else if (next_conv == 1 || conv_start_pulse == 1) begin
+			load_xaddr_val <= load_xaddr_val + 1;
+			m_valid_y <= 1;
+		end
 	end
+end
+
+// Setting convolution done flag once second last entry has been processed
+always @ (posedge clk) begin
+	if (reset == 1)
+		conv_done <= 0;
 	else begin
-		if (m_ready_y == 1'b1 && m_valid_y == 1'b1)  //reset when ready is recieved and valid was asserted
-		       m_valid_y <= 1'b0;	
-		else if (m_pre_valid_int == 1'b1 && conv_start == 1'b1)  //assert with final accumulation
-			m_valid_y <= 1'b1;
-
-		if (m_ready_y == 1'b1 && m_pre_valid == 1'b1 && m_valid_y == 1'b1)   //reset when ready is recieved
-			m_pre_valid <= 1'b0;
-		else if (fmem_addr == F_MEM_SIZE - 2 && conv_start == 1'b1)  //assert when 1 accumulation away from final result
-			m_pre_valid <= 1'b1;
-
-		if (m_ready_y == 1'b1 && m_pre_valid_int == 1'b1 && m_valid_y == 1'b1)   //reset when ready is recieved
-			m_pre_valid_int <= 1'b0;
-		else if (fmem_addr == F_MEM_SIZE - 1 && conv_start == 1'b1)  //assert when 1 accumulation away from final result
-			m_pre_valid_int <= 1'b1;
-
-		if (conv_done == 1'b1)   //reset after completion of convolution
-                        cnt_conv <= 0;
-		else if (m_pre_valid == 1'b1 && m_pre_valid_int == 1'b0) //detect only for rise edge of pre-valid, require to be stable before loading xaddr
-			cnt_conv <= cnt_conv + 1;
-
-		if (cnt_conv == X_MEM_SIZE - F_MEM_SIZE + 1 && m_valid_y == 1'b1 && m_ready_y == 1'b1)  //end of convolution
-		       conv_done <= 1'b1;
-	        else
-		       conv_done <= 1'b0;  //just generate a pulse
-
-		if (m_ready_y == 1'b1 && m_valid_y == 1'b1)  //reset when ready is recieved and valid was asserted, to clear the accumulator
-			conv_start_accum <= 1'b0;
+		if (load_xaddr_val == X_MEM_SIZE-F_MEM_SIZE)
+			conv_done <= 1;
 		else
-			conv_start_accum <= conv_start;
-
-
+			conv_done <= 0;
 	end
 end
+
 
 endmodule
-
