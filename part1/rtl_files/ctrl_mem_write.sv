@@ -1,5 +1,5 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// ESE 507 : Project 1 
+// ESE 507 : Project 2 
 // Authors : Prateek Jain and Vishal Goyal
 // Purpose : 
 // 1. Generate control signals to load memory with input data from Master
