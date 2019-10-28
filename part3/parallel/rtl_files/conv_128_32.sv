@@ -148,9 +148,9 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
    always_comb begin
 	  for(j=0; j<F_SIZE; j++) begin
 		  if (j == 0)
-			  accum_in[0] = x_mult_f[0];
+			  accum_in[0] = signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[0][$left(x_mult_f[0])]}} , x_mult_f[0]});
 		  else
-			  accum_in[j] = accum_in[j-1] + x_mult_f[j];
+			  accum_in[j] = accum_in[j-1] + signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[j][$left(x_mult_f[j])]}} , x_mult_f[j]});
 	  end
    end
 
