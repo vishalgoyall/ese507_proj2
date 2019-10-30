@@ -71,7 +71,7 @@ always_ff @(posedge clk) begin
 			end
 			
 			NEXT_COMPUTE: begin
-				if (en_pline_stages == 1'b1 && load_xaddr_val != X_MEM_SIZE - F_MEM_SIZE)
+				if (en_pline_stages == 1'b1 && load_xaddr_val != unsigned'(X_MEM_SIZE - F_MEM_SIZE))
 					load_xaddr_val <= load_xaddr_val + 'b1;
 				else if (en_pline_stages == 1'b1)
 					state <= FLUSH_OUT;

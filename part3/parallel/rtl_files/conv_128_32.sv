@@ -1,7 +1,7 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// ESE 507 : Project 1 (Convolution)
+// ESE 507 : Project 2 (Convolution)
 // Authors : Prateek Jain and Vishal Goyal
-// Description: This is the top level module for convolution of X (8) and F (4)
+// Description: This is the top level module for convolution of X (128) and F (32)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 module conv_128_32 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, parameter X_SIZE = 128, parameter F_SIZE = 32, parameter ACC_SIZE = 21) (
@@ -36,7 +36,7 @@ logic fmem_wr_en;
 logic fmem_reset;
 logic signed [DATA_WIDTH_F-1:0] fmem_data [F_SIZE-1:0];
 
-logic conv_start, conv_pre_start;
+logic conv_start;
 logic conv_done;
 
 logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f [F_SIZE-1:0];
@@ -111,13 +111,7 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 // Control Module for Convulation and AXI on output with master
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  
- always_ff @(posedge clk) begin
-	if (reset == 1'b1)
-		conv_pre_start <= 1'b0;
-	else 
-		conv_pre_start <= xmem_full && fmem_full;  //one cycle delay required to flush out X from memory during read start
- end
- assign conv_start = conv_pre_start && xmem_full && fmem_full;
+ assign conv_start = xmem_full && fmem_full;
 
   ctrl_conv_output #(.F_MEM_SIZE(F_SIZE), .X_MEM_SIZE(X_SIZE), .X_MEM_ADDR_WIDTH(X_MEM_ADDR_WIDTH), .F_MEM_ADDR_WIDTH(F_MEM_ADDR_WIDTH))
   ctrl_conv_output_inst (
@@ -153,8 +147,8 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 			  accum_in[j] = accum_in[j-1] + signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[j][$left(x_mult_f[j])]}} , x_mult_f[j]});
 	  end
    end
-
-   assign m_data_out_y = accum_in[F_SIZE-1];   //send output data from accumulator output
+  
+assign m_data_out_y = accum_in[F_SIZE-1];
 
 endmodule
 

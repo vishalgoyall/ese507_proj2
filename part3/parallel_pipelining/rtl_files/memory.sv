@@ -7,7 +7,7 @@
 module memory(clk, data_in, data_out, addr, wr_en);
    
     parameter                   	WIDTH=16, SIZE=64, LOGSIZE=6;
-    input [WIDTH-1:0]           	data_in;
+    input signed [WIDTH-1:0]           	data_in;
     output logic signed [WIDTH-1:0]	data_out[SIZE-1:0];
     input [LOGSIZE-1:0]         	addr;
     input                       	clk, wr_en;

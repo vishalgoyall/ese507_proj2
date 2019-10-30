@@ -22,11 +22,12 @@ always_ff @(posedge clk) begin
 		mem_addr <= 0;
 	end
 	else begin
-		if (mem_wr_en == 1'b1 && mem_addr == MEM_SIZE - 1) //if data is written in last memory address, then pull down s_ready along with write
+               //if data is written in last memory address, then pull down s_ready along with write
+		if (mem_wr_en == 1'b1 && mem_addr == unsigned'(MEM_SIZE - 1)) 
 		       s_ready <= 1'b0;
 
 		if (en_ext_ctrl == 1'b0) begin   //if external rd ctrl required for memory address
-	                if (mem_wr_en == 1'b1 && mem_addr == MEM_SIZE - 1) //if data is written in last memory address, reset addr to 0
+	                if (mem_wr_en == 1'b1 && mem_addr == unsigned'(MEM_SIZE - 1)) //if data is written in last memory address, reset addr to 0
 		        	mem_addr <= 0;
 	                else if (mem_wr_en == 1'b1)  //else if wr_en is asserted, keep on incrementing the address to point to next mem location
 		               mem_addr <= mem_addr + 1;	 
