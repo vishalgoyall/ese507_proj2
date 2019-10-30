@@ -75,7 +75,8 @@ logic signed [ACC_SIZE-1:0] accum_out;
 	  .conv_done         (conv_done),
 	  .m_valid_y         (m_valid_y),
 	  .s_ready_x         (s_ready_x),
-	  .x_count           (xmem_count)
+	  .x_count           (xmem_count),
+	  .y_accepted        (y_out_en)
   );
   assign xmem_full = ~s_ready_x;
   
