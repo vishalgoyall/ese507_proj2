@@ -25,9 +25,8 @@ parameter logic [F_MEM_ADDR_WIDTH-1:0] load_faddr_val = 0;
 
 logic xmem_full;
 logic xmem_wr_en;
-logic xmem_reset;
-logic [X_MEM_ADDR_WIDTH-1:0] load_xaddr_val;
-logic signed [DATA_WIDTH_X-1:0] xmem_data [X_SIZE-1:0];
+logic signed [DATA_WIDTH_X-1:0] xmem_data [F_SIZE:0];
+logic [X_MEM_ADDR_WIDTH:0] xmem_count;
 
 logic fmem_full;
 logic [F_MEM_ADDR_WIDTH-1 :0] fmem_addr;
@@ -35,11 +34,14 @@ logic fmem_wr_en;
 logic fmem_reset;
 logic signed [DATA_WIDTH_F-1:0] fmem_data [F_SIZE-1:0];
 
-logic conv_start, conv_pre_start;
+logic conv_start;
 logic conv_done;
+
+logic y_out_en;
 
 logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f [F_SIZE-1:0];
 logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
+logic signed [ACC_SIZE-1:0] accum_out;
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -47,7 +49,7 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //Reset generation. 
   //Conv_done is a one cycle pulse generated after convulation is complete
-  assign xmem_reset = reset || conv_done;   
+/*  assign xmem_reset = reset || conv_done;   
   
   //ctrl module instantiation
   ctrl_x_mem_write #(.MEM_ADDR_WIDTH(X_MEM_ADDR_WIDTH), .MEM_SIZE(X_SIZE)) ctrl_xmem_write_inst (
@@ -56,16 +58,32 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 	  .s_valid           (s_valid_x),
 	  .s_ready           (s_ready_x),
 	  .en_ext_ctrl       (conv_start),
-	  .mem_wr_en         (xmem_wr_en)
+	  .next_write	     (next_conv),
+	  .ready_y	     (m_ready_y),
+	  .mem_wr_en         (xmem_wr_en),
+	  .x_count	     (xmem_count)
   );
-
+*/
+  control_unit #(.F_MEM_SIZE(F_SIZE), .X_MEM_SIZE(X_SIZE), .X_MEM_ADDR_WIDTH(X_MEM_ADDR_WIDTH), .F_MEM_ADDR_WIDTH(F_MEM_ADDR_WIDTH))
+  ctrl_module_inst (
+	  .clk               (clk),  
+	  .reset             (reset),
+	  .conv_start        (conv_start),
+	  .m_ready_y         (m_ready_y),
+	  .s_valid_x         (s_valid_x),
+	  .mem_wr_en         (xmem_wr_en),
+	  .conv_done         (conv_done),
+	  .m_valid_y         (m_valid_y),
+	  .s_ready_x         (s_ready_x),
+	  .x_count           (xmem_count)
+  );
   assign xmem_full = ~s_ready_x;
   
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // X_MEM instantiation
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  x_memory #(.WIDTH(DATA_WIDTH_X), .SIZE(X_SIZE),  .LOGSIZE(X_MEM_ADDR_WIDTH)) xmem_inst (
+  x_memory #(.WIDTH(DATA_WIDTH_X), .SIZE(F_SIZE),  .LOGSIZE(X_MEM_ADDR_WIDTH)) xmem_inst (
           .clk        (clk),
           .data_in    (s_data_in_x),
           .data_out   (xmem_data),
@@ -108,24 +126,26 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 // Control Module for Convulation and AXI on output with master
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  
- always_ff @(posedge clk) begin
+ /*always_ff @(posedge clk) begin
 	if (reset == 1'b1)
 		conv_pre_start <= 1'b0;
 	else 
 		conv_pre_start <= xmem_full && fmem_full;  //one cycle delay required to flush out X from memory during read start
  end
- assign conv_start = conv_pre_start && xmem_full && fmem_full;
+ */
+ assign conv_start = (xmem_count > F_SIZE) && fmem_full;
 
-  ctrl_conv_output #(.F_MEM_SIZE(F_SIZE), .X_MEM_SIZE(X_SIZE), .X_MEM_ADDR_WIDTH(X_MEM_ADDR_WIDTH), .F_MEM_ADDR_WIDTH(F_MEM_ADDR_WIDTH))
+/*  ctrl_conv_output #(.F_MEM_SIZE(F_SIZE), .X_MEM_SIZE(X_SIZE), .X_MEM_ADDR_WIDTH(X_MEM_ADDR_WIDTH), .F_MEM_ADDR_WIDTH(F_MEM_ADDR_WIDTH))
   ctrl_conv_output_inst (
           .clk             (clk),
 	  .reset           (reset),
 	  .conv_start      (conv_start),
 	  .conv_done       (conv_done),
-	  .load_xaddr_val  (load_xaddr_val),
+	  .x_wr_en         (xmem_wr_en),
+	  .next_conv	   (next_conv),
 	  .m_ready_y       (m_ready_y),
 	  .m_valid_y       (m_valid_y)
-  );
+  );*/
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // MAC unit of design
@@ -136,7 +156,7 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 
    genvar i;
    generate for(i=0; i<F_SIZE; i++) begin : multiplier
-	assign x_mult_f[i] = xmem_data[i+load_xaddr_val]*fmem_data[i];  
+	assign x_mult_f[i] = xmem_data[i]*fmem_data[i];  
    end
    endgenerate
 
@@ -151,7 +171,16 @@ logic signed [ACC_SIZE-1:0] accum_in [F_SIZE-1:0];
 	  end
    end
 
-   assign m_data_out_y = accum_in[F_SIZE-1];   //send output data from accumulator output
+   always @ (posedge clk) begin
+	if (reset == 1) begin
+		accum_out <= 'b0;
+	end else begin
+		if (y_out_en)
+			accum_out <= accum_in[F_SIZE-1];
+	end
+   end
+
+   assign m_data_out_y = accum_out;   //send output data from accumulator output
 
 endmodule
 

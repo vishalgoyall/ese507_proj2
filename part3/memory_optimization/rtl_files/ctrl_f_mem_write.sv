@@ -5,7 +5,7 @@
 // 1. Generate control signals to load memory with input data from Master
 // 2. Follow AXI protocol and generate READY signal
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-module ctrl_mem_write #(parameter MEM_ADDR_WIDTH = 3, parameter MEM_SIZE = 8) (
+module ctrl_f_mem_write #(parameter MEM_ADDR_WIDTH = 3, parameter MEM_SIZE = 8) (
         input                             clk,  
         input                             reset,
         input                             s_valid,

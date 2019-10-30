@@ -1,5 +1,3 @@
-# vsim tbench2 -sv_seed 10 -c -do "run -all" 
-# Start time: 22:43:13 on Oct 27,2019
 # //  ModelSim DE 2019.3 Jul 24 2019 Linux 3.10.0-957.5.1.el7.x86_64
 # //
 # //  Copyright 1991-2019 Mentor Graphics Corporation
@@ -13,26 +11,485 @@
 # //  is prohibited from disclosure under the Trade Secrets Act,
 # //  18 U.S.C. Section 1905.
 # //
+# ** Warning: (vsim-8690) Ignoring plusarg '+acc' with -novopt in effect.
+# vsim check_timing "+acc" 
+# Start time: 20:55:39 on Oct 29,2019
 # Loading sv_std.std
-# Loading work.tbench2
+# Loading work.check_timing
 # Loading work.conv_128_32
-# Loading work.ctrl_mem_write
-# Loading work.memory
-# Loading work.ctrl_conv_output
-# run -all
-# ** Warning: (vsim-PLI-3407) Too many data words read on line 1281 of file "random_in_x.hex". (Current address [1280], address range [0:1279])    : part2_random_tb.sv(52)
-#    Time: 0 ns  Iteration: 0  Instance: /tbench2
-# ** Warning: (vsim-PLI-3407) Too many data words read on line 321 of file "random_in_f.hex". (Current address [320], address range [0:319])    : part2_random_tb.sv(53)
-#    Time: 0 ns  Iteration: 0  Instance: /tbench2
-# ** Warning: (vsim-PLI-3407) Too many data words read on line 971 of file "expected_out.hex". (Current address [970], address range [0:969])    : part2_random_tb.sv(57)
-#    Time: 0 ns  Iteration: 0  Instance: /tbench2
+# Loading work.control_unit
+# Loading work.x_memory
+# Loading work.ctrl_f_mem_write
+# Loading work.f_memory
+add wave -position insertpoint  \
+sim:/check_timing/clk
+do /home/home5/vgoyal/myese507/ese507_proj2/part3/memory_optimization/verif/wave.do
+# ** Error: (vish-4014) No objects found matching '/check_timing/dut/xmem_reset'.
+# Executing ONERROR command at macro /home/home5/vgoyal/myese507/ese507_proj2/part3/memory_optimization/verif/wave.do line 53
+add wave -position insertpoint  \
+sim:/check_timing/dut/ctrl_module_inst/clk \
+sim:/check_timing/dut/ctrl_module_inst/conv_done \
+sim:/check_timing/dut/ctrl_module_inst/conv_start \
+sim:/check_timing/dut/ctrl_module_inst/conv_start_pulse \
+sim:/check_timing/dut/ctrl_module_inst/conv_start_reg \
+sim:/check_timing/dut/ctrl_module_inst/curr_state \
+sim:/check_timing/dut/ctrl_module_inst/F_MEM_ADDR_WIDTH \
+sim:/check_timing/dut/ctrl_module_inst/F_MEM_SIZE \
+sim:/check_timing/dut/ctrl_module_inst/load_xaddr_val \
+sim:/check_timing/dut/ctrl_module_inst/m_ready_y \
+sim:/check_timing/dut/ctrl_module_inst/m_valid_y \
+sim:/check_timing/dut/ctrl_module_inst/mem_wr_en \
+sim:/check_timing/dut/ctrl_module_inst/mem_wr_en_int \
+sim:/check_timing/dut/ctrl_module_inst/mem_wr_en_reg \
+sim:/check_timing/dut/ctrl_module_inst/mem_wr_en_reg_reg \
+sim:/check_timing/dut/ctrl_module_inst/next_conv \
+sim:/check_timing/dut/ctrl_module_inst/next_state \
+sim:/check_timing/dut/ctrl_module_inst/reset \
+sim:/check_timing/dut/ctrl_module_inst/S0 \
+sim:/check_timing/dut/ctrl_module_inst/S1 \
+sim:/check_timing/dut/ctrl_module_inst/s_ready_x \
+sim:/check_timing/dut/ctrl_module_inst/s_valid_x \
+sim:/check_timing/dut/ctrl_module_inst/x_count \
+sim:/check_timing/dut/ctrl_module_inst/X_MEM_ADDR_WIDTH \
+sim:/check_timing/dut/ctrl_module_inst/X_MEM_SIZE
+run -all 
+# ERROR:   y[    0] =   175776    expected output =   177328
+# SUCCESS: y[    1] =   175776
+# ERROR:   y[    2] =   175776    expected output =   174224
+# ERROR:   y[    3] =   175776    expected output =   172672
+# ERROR:   y[    4] =   174224    expected output =   171120
+# ERROR:   y[    5] =   174224    expected output =   169568
+# ERROR:   y[    6] =   174224    expected output =   168016
+# ERROR:   y[    7] =   171120    expected output =   166464
+# ERROR:   y[    8] =   171120    expected output =   164912
+# ERROR:   y[    9] =   171120    expected output =   163360
+# ERROR:   y[   10] =   171120    expected output =   161808
+# ERROR:   y[   11] =   169568    expected output =   160256
+# ERROR:   y[   12] =   168016    expected output =   158704
+# ERROR:   y[   13] =   168016    expected output =   157152
+# ERROR:   y[   14] =   166464    expected output =   155600
+# ERROR:   y[   15] =   164912    expected output =   154048
+# ERROR:   y[   16] =   164912    expected output =   152496
+# ERROR:   y[   17] =   164912    expected output =   150944
+# ERROR:   y[   18] =   164912    expected output =   149392
+# ERROR:   y[   19] =   163360    expected output =   147840
+# ERROR:   y[   20] =   163360    expected output =   146288
+# ERROR:   y[   21] =   160256    expected output =   144736
+# ERROR:   y[   22] =   160256    expected output =   143184
+# ERROR:   y[   23] =   160256    expected output =   141632
+# ERROR:   y[   24] =   160256    expected output =   140080
+# ERROR:   y[   25] =   157152    expected output =   138528
+# ERROR:   y[   26] =   157152    expected output =   136976
+# ERROR:   y[   27] =   155600    expected output =   135424
+# ERROR:   y[   28] =   155600    expected output =   133872
+# ERROR:   y[   29] =   154048    expected output =   132320
+# ERROR:   y[   30] =   150944    expected output =   130768
+# ERROR:   y[   31] =   149392    expected output =   129216
+# ERROR:   y[   32] =   149392    expected output =   127664
+# ERROR:   y[   33] =   149392    expected output =   126112
+# ERROR:   y[   34] =   147840    expected output =   124560
+# ERROR:   y[   35] =   147840    expected output =   123008
+# ERROR:   y[   36] =   147840    expected output =   121456
+# ERROR:   y[   37] =   147840    expected output =   119904
+# ERROR:   y[   38] =   146288    expected output =   118352
+# ERROR:   y[   39] =   144736    expected output =   116800
+# ERROR:   y[   40] =   143184    expected output =   115248
+# ERROR:   y[   41] =   141632    expected output =   113696
+# ERROR:   y[   42] =   138528    expected output =   112144
+# ERROR:   y[   43] =   138528    expected output =   110592
+# ERROR:   y[   44] =   138528    expected output =   109040
+# ERROR:   y[   45] =   136976    expected output =   107488
+# ERROR:   y[   46] =   133872    expected output =   105936
+# ERROR:   y[   47] =   132320    expected output =   104384
+# ERROR:   y[   48] =   130768    expected output =   102832
+# ERROR:   y[   49] =   130768    expected output =   101280
+# ERROR:   y[   50] =   130768    expected output =    99728
+# ERROR:   y[   51] =   127664    expected output =    98176
+# ERROR:   y[   52] =   127664    expected output =    96624
+# ERROR:   y[   53] =   127664    expected output =    95072
+# ERROR:   y[   54] =   127664    expected output =    93520
+# ERROR:   y[   55] =   126112    expected output =    91968
+# ERROR:   y[   56] =   124560    expected output =    90416
+# ERROR:   y[   57] =   124560    expected output =    88864
+# ERROR:   y[   58] =   124560    expected output =    87312
+# ERROR:   y[   59] =   121456    expected output =    85760
+# ERROR:   y[   60] =   119904    expected output =    84208
+# ERROR:   y[   61] =   118352    expected output =    82656
+# ERROR:   y[   62] =   118352    expected output =    81104
+# ERROR:   y[   63] =   115248    expected output =    79552
+# ERROR:   y[   64] =   115248    expected output =    78000
+# ERROR:   y[   65] =   113696    expected output =    76448
+# ERROR:   y[   66] =   113696    expected output =    74896
+# ERROR:   y[   67] =   113696    expected output =    73344
+# ERROR:   y[   68] =   112144    expected output =    71792
+# ERROR:   y[   69] =   112144    expected output =    70240
+# ERROR:   y[   70] =   110592    expected output =    68688
+# ERROR:   y[   71] =   110592    expected output =    67136
+# ERROR:   y[   72] =   109040    expected output =    65584
+# ERROR:   y[   73] =   109040    expected output =    64032
+# ERROR:   y[   74] =   107488    expected output =    62480
+# ERROR:   y[   75] =   105936    expected output =    60928
+# ERROR:   y[   76] =   105936    expected output =    59376
+# ERROR:   y[   77] =   105936    expected output =    57824
+# ERROR:   y[   78] =   105936    expected output =    56272
+# ERROR:   y[   79] =   104384    expected output =    54720
+# ERROR:   y[   80] =   104384    expected output =    53168
+# ERROR:   y[   81] =   102832    expected output =    51616
+# ERROR:   y[   82] =   102832    expected output =    50064
+# ERROR:   y[   83] =   102832    expected output =    48512
+# ERROR:   y[   84] =   101280    expected output =    46960
+# ERROR:   y[   85] =    99728    expected output =    45408
+# ERROR:   y[   86] =    99728    expected output =    43856
+# ERROR:   y[   87] =    99728    expected output =    42304
+# ERROR:   y[   88] =    99728    expected output =    40752
+# ERROR:   y[   89] =    99728    expected output =    39200
+# ERROR:   y[   90] =    99728    expected output =    37648
+# ERROR:   y[   91] =    99728    expected output =    36096
+# ERROR:   y[   92] =    98176    expected output =    34544
+# ERROR:   y[   93] =    98176    expected output =    32992
+# ERROR:   y[   94] =    96624    expected output =    31440
+# ERROR:   y[   95] =    96624    expected output =    29888
+# ERROR:   y[   96] =    95072    expected output =    28336
+# ERROR:   y[   97] =    16192    expected output =    -5456
+# ERROR:   y[   98] =    15664    expected output =    -5984
+# ERROR:   y[   99] =    15136    expected output =    -6512
+# ERROR:   y[  100] =    15136    expected output =    -7040
+# ERROR:   y[  101] =    14608    expected output =    -7568
+# ERROR:   y[  102] =    14608    expected output =    -8096
+# ERROR:   y[  103] =    13552    expected output =    -8624
+# ERROR:   y[  104] =    13024    expected output =    -9152
+# ERROR:   y[  105] =    13024    expected output =    -9680
+# ERROR:   y[  106] =    13024    expected output =   -10208
+# ERROR:   y[  107] =    13024    expected output =   -10736
+# ERROR:   y[  108] =    13024    expected output =   -11264
+# ERROR:   y[  109] =    11968    expected output =   -11792
+# ERROR:   y[  110] =    11968    expected output =   -12320
+# ERROR:   y[  111] =    11440    expected output =   -12848
+# ERROR:   y[  112] =    11440    expected output =   -13376
+# ERROR:   y[  113] =    10912    expected output =   -13904
+# ERROR:   y[  114] =    10912    expected output =   -14432
+# ERROR:   y[  115] =    10912    expected output =   -14960
+# ERROR:   y[  116] =    10912    expected output =   -15488
+# ERROR:   y[  117] =    10384    expected output =   -16016
+# ERROR:   y[  118] =    10384    expected output =   -16544
+# ERROR:   y[  119] =    10384    expected output =   -17072
+# ERROR:   y[  120] =     9856    expected output =   -17600
+# ERROR:   y[  121] =     9328    expected output =   -18128
+# ERROR:   y[  122] =     9328    expected output =   -18656
+# ERROR:   y[  123] =     9328    expected output =   -19184
+# ERROR:   y[  124] =     8272    expected output =   -19712
+# ERROR:   y[  125] =     8272    expected output =   -20240
+# ERROR:   y[  126] =     8272    expected output =   -20768
+# ERROR:   y[  127] =     8272    expected output =   -21296
+# ERROR:   y[  128] =     8272    expected output =   -21824
+# ERROR:   y[  129] =     7744    expected output =   -22352
+# ERROR:   y[  130] =     7744    expected output =   -22880
+# ERROR:   y[  131] =     7216    expected output =   -23408
+# ERROR:   y[  132] =     6688    expected output =   -23936
+# ERROR:   y[  133] =     6688    expected output =   -24464
+# ERROR:   y[  134] =     6688    expected output =   -24992
+# ERROR:   y[  135] =     6160    expected output =   -25520
+# ERROR:   y[  136] =     6160    expected output =   -26048
+# ERROR:   y[  137] =     6160    expected output =   -26576
+# ERROR:   y[  138] =     5632    expected output =   -27104
+# ERROR:   y[  139] =     5632    expected output =   -27632
+# ERROR:   y[  140] =     5104    expected output =   -28160
+# ERROR:   y[  141] =     5104    expected output =   -28688
+# ERROR:   y[  142] =     5104    expected output =   -29216
+# ERROR:   y[  143] =     5104    expected output =   -29744
+# ERROR:   y[  144] =     5104    expected output =   -30272
+# ERROR:   y[  145] =     3520    expected output =   -30800
+# ERROR:   y[  146] =     2992    expected output =   -31328
+# ERROR:   y[  147] =     2992    expected output =   -31856
+# ERROR:   y[  148] =     2992    expected output =   -32384
+# ERROR:   y[  149] =     2992    expected output =   -32912
+# ERROR:   y[  150] =     2464    expected output =   -33440
+# ERROR:   y[  151] =     2464    expected output =   -33968
+# ERROR:   y[  152] =     1936    expected output =   -34496
+# ERROR:   y[  153] =     1408    expected output =   -35024
+# ERROR:   y[  154] =      880    expected output =   -35552
+# ERROR:   y[  155] =      352    expected output =   -36080
+# ERROR:   y[  156] =     -176    expected output =   -36608
+# ERROR:   y[  157] =     -176    expected output =   -37136
+# ERROR:   y[  158] =     -704    expected output =   -37664
+# ERROR:   y[  159] =     -704    expected output =   -38192
+# ERROR:   y[  160] =    -1232    expected output =   -38720
+# ERROR:   y[  161] =    -1760    expected output =   -39248
+# ERROR:   y[  162] =    -2288    expected output =   -39776
+# ERROR:   y[  163] =    -2288    expected output =   -40304
+# ERROR:   y[  164] =    -2288    expected output =   -40832
+# ERROR:   y[  165] =    -2288    expected output =   -41360
+# ERROR:   y[  166] =    -2288    expected output =   -41888
+# ERROR:   y[  167] =    -2816    expected output =   -42416
+# ERROR:   y[  168] =    -3344    expected output =   -42944
+# ERROR:   y[  169] =    -3344    expected output =   -43472
+# ERROR:   y[  170] =    -3344    expected output =   -44000
+# ERROR:   y[  171] =    -3344    expected output =   -44528
+# ERROR:   y[  172] =    -3344    expected output =   -45056
+# ERROR:   y[  173] =    -3872    expected output =   -45584
+# ERROR:   y[  174] =    -4400    expected output =   -46112
+# ERROR:   y[  175] =    -4400    expected output =   -46640
+# ERROR:   y[  176] =    -4928    expected output =   -47168
+# ERROR:   y[  177] =    -5456    expected output =   -47696
+# ERROR:   y[  178] =    -5456    expected output =   -48224
+# ERROR:   y[  179] =    -5984    expected output =   -48752
+# ERROR:   y[  180] =    -5984    expected output =   -49280
+# ERROR:   y[  181] =    -5984    expected output =   -49808
+# ERROR:   y[  182] =    -5984    expected output =   -50336
+# ERROR:   y[  183] =    -6512    expected output =   -50864
+# ERROR:   y[  184] =    -7568    expected output =   -51392
+# ERROR:   y[  185] =    -8096    expected output =   -51920
+# ERROR:   y[  186] =    -8096    expected output =   -52448
+# ERROR:   y[  187] =    -8096    expected output =   -52976
+# ERROR:   y[  188] =    -8096    expected output =   -53504
+# ERROR:   y[  189] =    -8624    expected output =   -54032
+# ERROR:   y[  190] =    -8624    expected output =   -54560
+# ERROR:   y[  191] =    -9680    expected output =   -55088
+# ERROR:   y[  192] =    -9680    expected output =   -55616
+# ERROR:   y[  193] =   -10208    expected output =   -56144
+# ** Note: $finish    : part2_simple_tb.sv(176)
+#    Time: 8535 ns  Iteration: 1  Instance: /check_timing
+# 1
+# Break in Module check_timing at part2_simple_tb.sv line 176
+vlog +acc ../rtl_files/*.sv 
+# Model Technology ModelSim DE vlog 2019.3 Compiler 2019.07 Jul 24 2019
+# Start time: 21:00:58 on Oct 29,2019
+# vlog -reportprogress 300 "+acc" ../rtl_files/control_unit.sv ../rtl_files/conv_128_32.sv ../rtl_files/ctrl_conv_output.sv ../rtl_files/ctrl_f_mem_write.sv ../rtl_files/ctrl_x_mem_write.sv ../rtl_files/f_memory.sv ../rtl_files/x_memory.sv 
+# -- Compiling module control_unit
+# -- Compiling module conv_128_32
+# -- Compiling module ctrl_conv_output
+# ** Error: (vlog-13069) ../rtl_files/ctrl_conv_output.sv(59): near "else": syntax error, unexpected else.
+# -- Compiling module ctrl_f_mem_write
+# -- Compiling module ctrl_x_mem_write
+# -- Compiling module f_memory
+# -- Compiling module x_memory
+# End time: 21:00:58 on Oct 29,2019, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+# /usr/local/mgc/modelsim_dlx/linuxpe/vlog failed.
+
+vlog +acc *.sv
+# Model Technology ModelSim DE vlog 2019.3 Compiler 2019.07 Jul 24 2019
+# Start time: 21:01:08 on Oct 29,2019
+# vlog -reportprogress 300 "+acc" part2_random_tb.sv part2_simple_tb.sv 
+# -- Compiling module tbench2
+# ** Warning: part2_random_tb.sv(46): (vlog-2254) SystemVerilog testbench feature
+# (randomization or coverage) detected in the design.
+# These features are only supported in Questasim.
+# -- Compiling module check_timing
+# ** Warning: part2_simple_tb.sv(35): (vlog-2254) SystemVerilog testbench feature
+# (randomization or coverage) detected in the design.
+# These features are only supported in Questasim.
 # 
-# ------------- simulation finished ------------------
-# Simulated          10 iterations;         970 outputs
-# No errors detected
-# ----------------------------------------------------
-# 
-# ** Note: $finish    : part2_random_tb.sv(163)
-#    Time: 45665 ns  Iteration: 2  Instance: /tbench2
-# End time: 22:43:14 on Oct 27,2019, Elapsed time: 0:00:01
-# Errors: 0, Warnings: 3
+# Top level modules:
+# 	tbench2
+# 	check_timing
+# End time: 21:01:08 on Oct 29,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 2
+restart -f 
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# Loading work.check_timing
+# Loading work.conv_128_32
+# Loading work.control_unit
+# Loading work.x_memory
+# Loading work.ctrl_f_mem_write
+# Loading work.f_memory
+write format wave -window .main_pane.wave.interior.cs.body.pw.wf /home/home5/vgoyal/myese507/ese507_proj2/part3/memory_optimization/verif/wave.do
+run -all 
+# ERROR:   y[    0] =   175776    expected output =   177328
+# SUCCESS: y[    1] =   175776
+# ERROR:   y[    2] =   175776    expected output =   174224
+# ERROR:   y[    3] =   175776    expected output =   172672
+# ERROR:   y[    4] =   175776    expected output =   171120
+# ERROR:   y[    5] =   174224    expected output =   169568
+# ERROR:   y[    6] =   174224    expected output =   168016
+# ERROR:   y[    7] =   174224    expected output =   166464
+# ERROR:   y[    8] =   174224    expected output =   164912
+# ERROR:   y[    9] =   172672    expected output =   163360
+# ERROR:   y[   10] =   171120    expected output =   161808
+# ERROR:   y[   11] =   171120    expected output =   160256
+# ERROR:   y[   12] =   169568    expected output =   158704
+# ERROR:   y[   13] =   168016    expected output =   157152
+# ERROR:   y[   14] =   168016    expected output =   155600
+# ERROR:   y[   15] =   168016    expected output =   154048
+# ERROR:   y[   16] =   166464    expected output =   152496
+# ERROR:   y[   17] =   164912    expected output =   150944
+# ERROR:   y[   18] =   164912    expected output =   149392
+# ERROR:   y[   19] =   164912    expected output =   147840
+# ERROR:   y[   20] =   161808    expected output =   146288
+# ERROR:   y[   21] =   161808    expected output =   144736
+# ERROR:   y[   22] =   160256    expected output =   143184
+# ERROR:   y[   23] =   157152    expected output =   141632
+# ERROR:   y[   24] =   157152    expected output =   140080
+# ERROR:   y[   25] =   157152    expected output =   138528
+# ERROR:   y[   26] =   157152    expected output =   136976
+# ERROR:   y[   27] =   157152    expected output =   135424
+# ERROR:   y[   28] =   155600    expected output =   133872
+# ERROR:   y[   29] =   154048    expected output =   132320
+# ERROR:   y[   30] =   152496    expected output =   130768
+# ERROR:   y[   31] =   152496    expected output =   129216
+# ERROR:   y[   32] =   150944    expected output =   127664
+# ERROR:   y[   33] =   147840    expected output =   126112
+# ERROR:   y[   34] =   146288    expected output =   124560
+# ERROR:   y[   35] =   144736    expected output =   123008
+# ERROR:   y[   36] =   144736    expected output =   121456
+# ERROR:   y[   37] =   144736    expected output =   119904
+# ERROR:   y[   38] =   141632    expected output =   118352
+# ERROR:   y[   39] =   141632    expected output =   116800
+# ERROR:   y[   40] =   141632    expected output =   115248
+# ERROR:   y[   41] =   140080    expected output =   113696
+# ERROR:   y[   42] =   140080    expected output =   112144
+# ERROR:   y[   43] =   138528    expected output =   110592
+# ERROR:   y[   44] =   136976    expected output =   109040
+# ERROR:   y[   45] =   135424    expected output =   107488
+# ERROR:   y[   46] =   135424    expected output =   105936
+# ERROR:   y[   47] =   135424    expected output =   104384
+# ERROR:   y[   48] =   135424    expected output =   102832
+# ERROR:   y[   49] =   133872    expected output =   101280
+# ERROR:   y[   50] =   133872    expected output =    99728
+# ERROR:   y[   51] =   132320    expected output =    98176
+# ERROR:   y[   52] =   132320    expected output =    96624
+# ERROR:   y[   53] =   130768    expected output =    95072
+# ERROR:   y[   54] =   130768    expected output =    93520
+# ERROR:   y[   55] =   130768    expected output =    91968
+# ERROR:   y[   56] =   130768    expected output =    90416
+# ERROR:   y[   57] =   129216    expected output =    88864
+# ERROR:   y[   58] =   127664    expected output =    87312
+# ERROR:   y[   59] =   127664    expected output =    85760
+# ERROR:   y[   60] =   127664    expected output =    84208
+# ERROR:   y[   61] =   126112    expected output =    82656
+# ERROR:   y[   62] =   126112    expected output =    81104
+# ERROR:   y[   63] =   126112    expected output =    79552
+# ERROR:   y[   64] =   126112    expected output =    78000
+# ERROR:   y[   65] =   124560    expected output =    76448
+# ERROR:   y[   66] =   124560    expected output =    74896
+# ERROR:   y[   67] =   124560    expected output =    73344
+# ERROR:   y[   68] =   123008    expected output =    71792
+# ERROR:   y[   69] =   123008    expected output =    70240
+# ERROR:   y[   70] =   121456    expected output =    68688
+# ERROR:   y[   71] =   121456    expected output =    67136
+# ERROR:   y[   72] =   121456    expected output =    65584
+# ERROR:   y[   73] =   121456    expected output =    64032
+# ERROR:   y[   74] =   121456    expected output =    62480
+# ERROR:   y[   75] =   121456    expected output =    60928
+# ERROR:   y[   76] =   119904    expected output =    59376
+# ERROR:   y[   77] =   119904    expected output =    57824
+# ERROR:   y[   78] =   119904    expected output =    56272
+# ERROR:   y[   79] =   118352    expected output =    54720
+# ERROR:   y[   80] =   118352    expected output =    53168
+# ERROR:   y[   81] =   118352    expected output =    51616
+# ERROR:   y[   82] =   118352    expected output =    50064
+# ERROR:   y[   83] =   116800    expected output =    48512
+# ERROR:   y[   84] =   116800    expected output =    46960
+# ERROR:   y[   85] =   116800    expected output =    45408
+# ERROR:   y[   86] =   115248    expected output =    43856
+# ERROR:   y[   87] =   115248    expected output =    42304
+# ERROR:   y[   88] =   113696    expected output =    40752
+# ERROR:   y[   89] =   112144    expected output =    39200
+# ERROR:   y[   90] =   110592    expected output =    37648
+# ERROR:   y[   91] =   110592    expected output =    36096
+# ERROR:   y[   92] =   109040    expected output =    34544
+# ERROR:   y[   93] =   107488    expected output =    32992
+# ERROR:   y[   94] =   107488    expected output =    31440
+# ERROR:   y[   95] =   107488    expected output =    29888
+# ERROR:   y[   96] =   104384    expected output =    28336
+# ERROR:   y[   97] =    19360    expected output =    -5456
+# ERROR:   y[   98] =    19360    expected output =    -5984
+# ERROR:   y[   99] =    18832    expected output =    -6512
+# ERROR:   y[  100] =    18832    expected output =    -7040
+# ERROR:   y[  101] =    18304    expected output =    -7568
+# ERROR:   y[  102] =    17776    expected output =    -8096
+# ERROR:   y[  103] =    17776    expected output =    -8624
+# ERROR:   y[  104] =    17776    expected output =    -9152
+# ERROR:   y[  105] =    17776    expected output =    -9680
+# ERROR:   y[  106] =    17248    expected output =   -10208
+# ERROR:   y[  107] =    17248    expected output =   -10736
+# ERROR:   y[  108] =    16720    expected output =   -11264
+# ERROR:   y[  109] =    16720    expected output =   -11792
+# ERROR:   y[  110] =    16720    expected output =   -12320
+# ERROR:   y[  111] =    16720    expected output =   -12848
+# ERROR:   y[  112] =    15664    expected output =   -13376
+# ERROR:   y[  113] =    15136    expected output =   -13904
+# ERROR:   y[  114] =    15136    expected output =   -14432
+# ERROR:   y[  115] =    15136    expected output =   -14960
+# ERROR:   y[  116] =    14608    expected output =   -15488
+# ERROR:   y[  117] =    14608    expected output =   -16016
+# ERROR:   y[  118] =    14080    expected output =   -16544
+# ERROR:   y[  119] =    13552    expected output =   -17072
+# ERROR:   y[  120] =    13024    expected output =   -17600
+# ERROR:   y[  121] =    11968    expected output =   -18128
+# ERROR:   y[  122] =    11968    expected output =   -18656
+# ERROR:   y[  123] =    11440    expected output =   -19184
+# ERROR:   y[  124] =    10912    expected output =   -19712
+# ERROR:   y[  125] =    10384    expected output =   -20240
+# ERROR:   y[  126] =     9856    expected output =   -20768
+# ERROR:   y[  127] =     9856    expected output =   -21296
+# ERROR:   y[  128] =     9856    expected output =   -21824
+# ERROR:   y[  129] =     9856    expected output =   -22352
+# ERROR:   y[  130] =     9856    expected output =   -22880
+# ERROR:   y[  131] =     9328    expected output =   -23408
+# ERROR:   y[  132] =     9328    expected output =   -23936
+# ERROR:   y[  133] =     9328    expected output =   -24464
+# ERROR:   y[  134] =     8800    expected output =   -24992
+# ERROR:   y[  135] =     8272    expected output =   -25520
+# ERROR:   y[  136] =     7744    expected output =   -26048
+# ERROR:   y[  137] =     7744    expected output =   -26576
+# ERROR:   y[  138] =     7744    expected output =   -27104
+# ERROR:   y[  139] =     7744    expected output =   -27632
+# ERROR:   y[  140] =     7744    expected output =   -28160
+# ERROR:   y[  141] =     6688    expected output =   -28688
+# ERROR:   y[  142] =     6688    expected output =   -29216
+# ERROR:   y[  143] =     6688    expected output =   -29744
+# ERROR:   y[  144] =     6688    expected output =   -30272
+# ERROR:   y[  145] =     6160    expected output =   -30800
+# ERROR:   y[  146] =     6160    expected output =   -31328
+# ERROR:   y[  147] =     5104    expected output =   -31856
+# ERROR:   y[  148] =     4576    expected output =   -32384
+# ERROR:   y[  149] =     4576    expected output =   -32912
+# ERROR:   y[  150] =     4576    expected output =   -33440
+# ERROR:   y[  151] =     4048    expected output =   -33968
+# ERROR:   y[  152] =     3520    expected output =   -34496
+# ERROR:   y[  153] =     3520    expected output =   -35024
+# ERROR:   y[  154] =     3520    expected output =   -35552
+# ERROR:   y[  155] =     3520    expected output =   -36080
+# ERROR:   y[  156] =     3520    expected output =   -36608
+# ERROR:   y[  157] =     2992    expected output =   -37136
+# ERROR:   y[  158] =     2992    expected output =   -37664
+# ERROR:   y[  159] =     2464    expected output =   -38192
+# ERROR:   y[  160] =     2464    expected output =   -38720
+# ERROR:   y[  161] =     2464    expected output =   -39248
+# ERROR:   y[  162] =     2464    expected output =   -39776
+# ERROR:   y[  163] =     1936    expected output =   -40304
+# ERROR:   y[  164] =     1936    expected output =   -40832
+# ERROR:   y[  165] =     1408    expected output =   -41360
+# ERROR:   y[  166] =      880    expected output =   -41888
+# ERROR:   y[  167] =      880    expected output =   -42416
+# ERROR:   y[  168] =      352    expected output =   -42944
+# ERROR:   y[  169] =      352    expected output =   -43472
+# ERROR:   y[  170] =     -176    expected output =   -44000
+# ERROR:   y[  171] =     -176    expected output =   -44528
+# ERROR:   y[  172] =     -176    expected output =   -45056
+# ERROR:   y[  173] =     -704    expected output =   -45584
+# ERROR:   y[  174] =    -1232    expected output =   -46112
+# ERROR:   y[  175] =    -1232    expected output =   -46640
+# ERROR:   y[  176] =    -1232    expected output =   -47168
+# ERROR:   y[  177] =    -1760    expected output =   -47696
+# ERROR:   y[  178] =    -1760    expected output =   -48224
+# ERROR:   y[  179] =    -2288    expected output =   -48752
+# ERROR:   y[  180] =    -2816    expected output =   -49280
+# ERROR:   y[  181] =    -2816    expected output =   -49808
+# ERROR:   y[  182] =    -2816    expected output =   -50336
+# ERROR:   y[  183] =    -2816    expected output =   -50864
+# ERROR:   y[  184] =    -3344    expected output =   -51392
+# ERROR:   y[  185] =    -3344    expected output =   -51920
+# ERROR:   y[  186] =    -3872    expected output =   -52448
+# ERROR:   y[  187] =    -4400    expected output =   -52976
+# ERROR:   y[  188] =    -4928    expected output =   -53504
+# ERROR:   y[  189] =    -5456    expected output =   -54032
+# ERROR:   y[  190] =    -5456    expected output =   -54560
+# ERROR:   y[  191] =    -5456    expected output =   -55088
+# ERROR:   y[  192] =    -5984    expected output =   -55616
+# ERROR:   y[  193] =    -5984    expected output =   -56144
+# ** Note: $finish    : part2_simple_tb.sv(176)
+#    Time: 10255 ns  Iteration: 1  Instance: /check_timing
+# 1
+# Break in Module check_timing at part2_simple_tb.sv line 176

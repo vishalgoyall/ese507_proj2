@@ -14,13 +14,14 @@ module ctrl_conv_output #(parameter F_MEM_SIZE = 4, parameter X_MEM_SIZE = 8, pa
         input                                 reset,           
         input                                 conv_start,     
         input                                 m_ready_y,       
+	input				      x_wr_en,
         output logic                          conv_done,       
-	output logic [X_MEM_ADDR_WIDTH-1:0]   load_xaddr_val,
+	output logic			      next_conv,
         output logic                          m_valid_y       
 );
 
-logic	next_conv;
-logic	conv_start_pulse, conv_start_reg;
+logic				conv_start_pulse, conv_start_reg;
+logic [X_MEM_ADDR_WIDTH-1:0]	load_xaddr_val;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Generating pulse on the rise edge of conv start to kick-start the conv
@@ -31,6 +32,7 @@ always @ (posedge clk) begin
 	else
 		conv_start_reg <= conv_start;
 end
+
 assign conv_start_pulse = conv_start && !conv_start_reg;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -42,15 +44,27 @@ always_comb begin
 	if (conv_start) begin
 		if (m_valid_y == 1 && m_ready_y == 1) begin
 			next_conv = 1;
-		end else if (m_valid_y == 1 && m_ready_y == 0) begin
+		end else if (m_valid_y==1 && m_ready_y == 0) begin
 			next_conv = 0;
 		end
 	end
 end
 
+logic x_wr_en_reg;
+logic x_wr_en_reg_reg;
+always @ (posedge clk) begin
+	if (reset == 1)
+		x_wr_en_reg <= 0;
+		x_wr_en_reg_reg <= 0;
+	else
+		x_wr_en_reg <= x_wr_en;
+		x_wr_en_reg_reg <= x_wr_en_reg;
+end
+
+logic wr_flag;
+assign wr_flag = next_conv ? 'b0 : (x_wr_en | x_wr_en_reg);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Logic to assert valid_y and incrementing the start address of x
-
 always @ (posedge clk) begin
 	if (reset == 1) begin
 		load_xaddr_val	<= 'b0;
@@ -62,9 +76,11 @@ always @ (posedge clk) begin
 		end else begin
 			if (conv_start_pulse == 1) begin
 				m_valid_y <= 1;
-			end else if (next_conv == 1) begin
+			end else if (next_conv == 1 || x_wr_en == 1) begin
 				load_xaddr_val <= load_xaddr_val + 1;
 				m_valid_y <= 1;
+			end else if (next_conv == 1 && x_wr_en == 0) begin
+				m_valid_y <= 0;
 			end
 		end
 	end

@@ -9,30 +9,54 @@ z2
 !i10f 100
 cModel Technology
 Z0 d/home/home5/vgoyal/myese507/ese507_proj2/part3/parallel/rtl_files
-vconv_128_32
+vcontrol_unit
 Z1 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z2 !s110 1572218890
+Z2 !s110 1572391436
 !i10b 1
-!s100 6A[9dkAY4_E:2mJf6K^<M3
-!s11b ?j;AM;Z7YVL8<A3B:L8Ze3
-INERWd5WX_afiSe1A<b2c93
+!s100 F4n2f9IckIiK]h7`>[nXf0
+!s11b dIm_IzL90]V7lMiGH59el0
+IU=lz>4bo<_`7`?VKz_AU51
 Z3 VDg1SIo80bB@j0V0VzS_@n1
 S1
-R0
-w1572218696
+Z4 d/home/home5/vgoyal/myese507/ese507_proj2/part3/memory_optimization/rtl_files
+w1572391244
+8control_unit.sv
+Fcontrol_unit.sv
+!i122 -1
+L0 1
+Z5 OP;L;2019.3;69
+r1
+!s85 0
+31
+Z6 !s108 1572391436.000000
+!s107 x_memory.sv|f_memory.sv|ctrl_x_mem_write.sv|ctrl_f_mem_write.sv|ctrl_conv_output.sv|conv_128_32.sv|control_unit.sv|
+Z7 !s90 control_unit.sv|conv_128_32.sv|ctrl_conv_output.sv|ctrl_f_mem_write.sv|ctrl_x_mem_write.sv|f_memory.sv|x_memory.sv|
+!i113 1
+Z8 tCvgOpt 0
+vconv_128_32
+R1
+R2
+!i10b 1
+!s100 f9Qj`P8NONG1H8;[BFWG:0
+!s11b IT3BK=@fzGlaR>jMh<ii]1
+IOlSnah<1Cc7`6`QiRZ@Fj3
+R3
+S1
+R4
+w1572388075
 8conv_128_32.sv
 Fconv_128_32.sv
 !i122 -1
 L0 7
-Z4 OP;L;2019.3;69
+R5
 r1
 !s85 0
 31
-Z5 !s108 1572218890.000000
-Z6 !s107 memory.sv|ctrl_mem_write.sv|ctrl_conv_output.sv|conv_128_32.sv|
-Z7 !s90 conv_128_32.sv|ctrl_conv_output.sv|ctrl_mem_write.sv|memory.sv|
+R6
+Z9 !s107 x_memory.sv|f_memory.sv|ctrl_x_mem_write.sv|ctrl_f_mem_write.sv|ctrl_conv_output.sv|conv_128_32.sv|control_unit.sv|
+R7
 !i113 1
-Z8 tCvgOpt 0
+R8
 vconv_8_4
 R1
 !s110 1572158588
@@ -48,7 +72,7 @@ w1572158148
 Fconv_8_4.sv
 !i122 -1
 L0 7
-R4
+R5
 r1
 !s85 0
 31
@@ -59,73 +83,169 @@ r1
 R8
 vctrl_conv_output
 R1
-R2
+!s110 1572300879
 !i10b 1
-!s100 O_;SR2U>SXOi9O[Jf^?J32
-!s11b WagXaZYnFZeRIE<ObYlOg0
-IML8=YS6Z_G3j;zIX?WcTX1
+!s100 k0A]FifLzCJ5X=O4G?@ZQ0
+!s11b 2@Nb5o73ZE3aSZzScOSk[2
+IlVWdlReJOHbhN_d^jP2PB2
 R3
 S1
-R0
-w1572204515
+R4
+w1572300480
 8ctrl_conv_output.sv
 Fctrl_conv_output.sv
 !i122 -1
 L0 12
-R4
+R5
 r1
 !s85 0
 31
+!s108 1572300879.000000
+Z10 !s107 x_memory.sv|f_memory.sv|ctrl_x_mem_write.sv|ctrl_f_mem_write.sv|ctrl_conv_output.sv|conv_128_32.sv|
+Z11 !s90 conv_128_32.sv|ctrl_conv_output.sv|ctrl_f_mem_write.sv|ctrl_x_mem_write.sv|f_memory.sv|x_memory.sv|
+!i113 1
+R8
+vctrl_f_mem_write
+R1
+R2
+!i10b 1
+!s100 ;kP1d4S[7^Ul8P<JO[bZ;2
+Z12 !s11b MBPfAfKE1ZPDm[BD9c<8T0
+I;:_b>=DRadQj9WMH_NVX83
+R3
+S1
+R4
+w1572300565
+Z13 8ctrl_f_mem_write.sv
+Z14 Fctrl_f_mem_write.sv
+!i122 -1
+L0 8
 R5
+r1
+!s85 0
+31
 R6
+R9
 R7
 !i113 1
 R8
 vctrl_mem_write
 R1
-R2
+Z15 !s110 1572300658
 !i10b 1
 !s100 Bm`2R>ZeQ4QT7=_UZ[UPG3
-!s11b MBPfAfKE1ZPDm[BD9c<8T0
-IoeoA>b8[@J?JdoMfghLPH0
+R12
+IoPGhmPW=1_Gl8]3d[zjfl3
 R3
 S1
-R0
-w1572158055
-8ctrl_mem_write.sv
-Fctrl_mem_write.sv
+R4
+w1572248370
+R13
+R14
 !i122 -1
 L0 8
-R4
+R5
 r1
 !s85 0
 31
+Z16 !s108 1572300657.000000
+R10
+R11
+!i113 1
+R8
+vctrl_x_mem_write
+R1
+R2
+!i10b 1
+!s100 B5c7R0<7fo?;i6kSIe[fW3
+!s11b DE9]>1N[`nJi:YBPc:Sfl3
+IC[kPk6<^6TgNm5_;4^Zk62
+R3
+S1
+R4
+w1572387861
+8ctrl_x_mem_write.sv
+Fctrl_x_mem_write.sv
+!i122 -1
+L0 8
 R5
+r1
+!s85 0
+31
 R6
+R9
+R7
+!i113 1
+R8
+vf_memory
+R1
+R2
+!i10b 1
+!s100 T:LliN3D8T:>@7^iRARFe2
+!s11b 7JjnVTbZ^5Sd:j[:VPdD:2
+Ic?Jil2bYKXS@a9fE76ile0
+R3
+S1
+R4
+w1572300576
+8f_memory.sv
+Ff_memory.sv
+!i122 -1
+L0 7
+R5
+r1
+!s85 0
+31
+R6
+R9
 R7
 !i113 1
 R8
 vmemory
 R1
-!s110 1572245112
+R15
 !i10b 1
-!s100 gImJnVeX_Zo2NeR2l@W=]3
+!s100 ZX1gF>DPbMYWFCmh;72:[3
 !s11b [Od56:eF<4JH]oTo`7eo:3
-Ie3oV4<AV6HMfN0nCGDdY02
+I[DVM@;GLZ6I9_]dHc2FcT0
 R3
 S1
-d/home/home5/vgoyal/myese507/ese507_proj2/part3/memory_optimization/rtl_files
-w1572244884
-8memory.sv
-Fmemory.sv
+R4
+w1572248547
+Z17 8x_memory.sv
+Z18 Fx_memory.sv
 !i122 -1
 L0 7
-R4
+R5
 r1
 !s85 0
 31
-!s108 1572245112.000000
-!s107 memory.sv|
-!s90 memory.sv|
+R16
+R10
+R11
+!i113 1
+R8
+vx_memory
+R1
+R2
+!i10b 1
+!s100 1ERKciYU2=?@;QbedJjNo2
+!s11b ]jc`4N9NnS83NPcMCHXfG1
+IcCD:RZOi1a:=0N:PGX5fM2
+R3
+S1
+R4
+w1572376519
+R17
+R18
+!i122 -1
+L0 7
+R5
+r1
+!s85 0
+31
+R6
+R9
+R7
 !i113 1
 R8

@@ -1,7 +1,7 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ESE 507 : Project 1 (Convolution)
 // Authors : Prateek Jain and Vishal Goyal
-// Description: This is the top level module for convolution of X (8) and F (4)
+// Description: This is the memory module being used to store X and F vectors
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 module memory(clk, data_in, data_out, addr, wr_en);

@@ -4,7 +4,7 @@
 // Description: This is the memory module being used to store X and F vectors
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-module memory(clk, data_in, data_out, addr, wr_en);
+module f_memory(clk, data_in, data_out, addr, wr_en);
    
     parameter                   	WIDTH=16, SIZE=64, LOGSIZE=6;
     input [WIDTH-1:0]           	data_in;

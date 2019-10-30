@@ -1,4 +1,5 @@
-../rtl_files/memory.sv
-../rtl_files/ctrl_conv_output.sv
-../rtl_files/ctrl_mem_write.sv
+../rtl_files/x_memory.sv
+../rtl_files/f_memory.sv
+../rtl_files/control_unit.sv
+../rtl_files/ctrl_f_mem_write.sv
 ../rtl_files/conv_128_32.sv
