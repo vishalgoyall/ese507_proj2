@@ -74,7 +74,7 @@ end
 // Setting convolution done flag once last entry has been processed and system
 // is ready to accept the last entry
 
-assign conv_done = (load_xaddr_val == X_MEM_SIZE-F_MEM_SIZE) && next_conv;
+assign conv_done = (load_xaddr_val == unsigned'(X_MEM_SIZE-F_MEM_SIZE)) && next_conv;
 
 
 endmodule

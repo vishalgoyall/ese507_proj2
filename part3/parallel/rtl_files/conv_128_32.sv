@@ -19,9 +19,9 @@ module conv_128_32 #(parameter DATA_WIDTH_X = 8, parameter DATA_WIDTH_F = 8, par
 );
 
 //logic and parameter declarations
-parameter X_MEM_ADDR_WIDTH = $clog2(X_SIZE);  //bus width for x mem addr
-parameter F_MEM_ADDR_WIDTH = $clog2(F_SIZE);  //bus width for f mem addr
-parameter logic [F_MEM_ADDR_WIDTH-1:0] load_faddr_val = 0;
+localparam X_MEM_ADDR_WIDTH = $clog2(X_SIZE);  //bus width for x mem addr
+localparam F_MEM_ADDR_WIDTH = $clog2(F_SIZE);  //bus width for f mem addr
+localparam logic [F_MEM_ADDR_WIDTH-1:0] load_faddr_val = 0;
 
 logic xmem_full;
 logic [X_MEM_ADDR_WIDTH-1:0] xmem_addr;
