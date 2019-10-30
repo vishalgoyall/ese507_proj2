@@ -1,0 +1,23 @@
+++++++++++++++++++++++++++++++++++++++++++++++++++
+++ Directory Description
+++++++++++++++++++++++++++++++++++++++++++++++++++
+1. rtl_files/: Contains design files
+	a. conv_128_32.sv : 
+		Top Module file for part3.3 (pipelining on parallel architecture)
+	b. ctrl_mem_write.sv :
+		Control Module to generate signals for mem write and AXI input
+	c. ctrl_conv_output :
+		Control module to generate signals for accum operations, mem reads and AXI output
+	d. memory.sv :
+		register structure to hold X and F values
+
+2. rtl_file_list :
+	File list of all RTL design files
+
+3. verif/: Contains tb files 
+	a. *.hex files and part2_*_tb.sv files picked from instructor's path.
+	b. run_simple_tb.sh : shell script to compile simple tb file and run sims using simple tb
+		>>./run_simple_tb.sh <gui/non>   [Add gui to run in gui mode, else run in bash mode]
+	c. run_random_tb.sh : shell script to compile random tb file and run sims using random tb
+		>>./run_random_tb.sh <gui/non> <seed_value>  [Add different seeds to randomize]
+
