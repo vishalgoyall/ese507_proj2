@@ -12,7 +12,7 @@ module conv_128_32 #(
 	parameter X_SIZE = 128, 
 	parameter F_SIZE = 32, 
 	parameter ACC_SIZE = 21,
-	parameter PLINE_STAGES = 6
+	parameter PLINE_STAGES = 3
 ) (
 	input clk, 
 	input reset, 
@@ -44,6 +44,7 @@ logic signed [DATA_WIDTH_F-1:0] fmem_data [F_SIZE-1:0];
 
 logic conv_start;
 logic conv_done;
+logic en_pline_stages;
 
 logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f [F_SIZE-1:0];
 logic signed [DATA_WIDTH_X+DATA_WIDTH_F-1:0] x_mult_f_int [F_SIZE-1:0];
@@ -160,26 +161,29 @@ logic signed [ACC_SIZE-1:0] adder_stage4 [(F_SIZE>>4)-1:0];
    //Stage 1
    genvar j;
    generate for(j=0; j<F_SIZE>>1; j=j+1) begin : adder_stage_1
-	   always @ (posedge clk) begin
-		   if (reset_pline)
-			   adder_stage1[j] <= 0;
-		   else
-			   if (en_pline_stages)
-			   adder_stage1[j] <=  signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[2*j][$left(x_mult_f[2*j])]}} , x_mult_f[2*j]}) + 
-		                               signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[2*j+1][$left(x_mult_f[2*j+1])]}} , x_mult_f[2*j+1]}); 
-	   end
+	   //always @ (posedge clk) begin
+	   //        if (reset_pline)
+	   //     	   adder_stage1[j] <= 0;
+	   //        else
+	   //     	   if (en_pline_stages)
+	   //     	   adder_stage1[j] <=  signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[2*j][$left(x_mult_f[2*j])]}} , x_mult_f[2*j]}) + 
+	   //                                    signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[2*j+1][$left(x_mult_f[2*j+1])]}} , x_mult_f[2*j+1]}); 
+	   //end
+   assign adder_stage1[j] =  signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[2*j][$left(x_mult_f[2*j])]}} , x_mult_f[2*j]}) + 
+		             signed'({{(ACC_SIZE-DATA_WIDTH_X-DATA_WIDTH_F){x_mult_f[2*j+1][$left(x_mult_f[2*j+1])]}} , x_mult_f[2*j+1]}); 
    end
    endgenerate
  
    //Stage 2
    generate for(j=0; j<F_SIZE>>2; j=j+1) begin : adder_stage_2
-	   always @ (posedge clk) begin
-		   if (reset_pline == 1'b1)
-			   adder_stage2[j] <= 0;
-		   else
-			   if (en_pline_stages)
-			   adder_stage2[j] <= adder_stage1[2*j] + adder_stage1[2*j+1]; 
-	   end
+//	   always @ (posedge clk) begin
+//		   if (reset_pline == 1'b1)
+//			   adder_stage2[j] <= 0;
+//		   else
+//			   if (en_pline_stages)
+//			   adder_stage2[j] <= adder_stage1[2*j] + adder_stage1[2*j+1]; 
+//	   end
+    assign adder_stage2[j] = adder_stage1[2*j] + adder_stage1[2*j+1]; 
    end
    endgenerate
 
@@ -197,13 +201,14 @@ logic signed [ACC_SIZE-1:0] adder_stage4 [(F_SIZE>>4)-1:0];
 
    //Stage 4
    generate for(j=0; j<F_SIZE>>4; j=j+1) begin : adder_stage_4
-	   always @ (posedge clk) begin
-		   if (reset_pline == 1'b1)
-			   adder_stage4[j] <= 0;
-		   else
-			   if(en_pline_stages)
-			   adder_stage4[j] <= adder_stage3[2*j] + adder_stage3[2*j+1]; 
-	   end
+	  // always @ (posedge clk) begin
+	  //         if (reset_pline == 1'b1)
+	  //      	   adder_stage4[j] <= 0;
+	  //         else
+	  //      	   if(en_pline_stages)
+	  //      	   adder_stage4[j] <= adder_stage3[2*j] + adder_stage3[2*j+1]; 
+	  // end
+   assign adder_stage4[j] = adder_stage3[2*j] + adder_stage3[2*j+1]; 
    end
    endgenerate
 

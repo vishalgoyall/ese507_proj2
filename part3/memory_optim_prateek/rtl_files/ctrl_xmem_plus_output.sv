@@ -27,7 +27,7 @@ module ctrl_xmem_plus_output
 	output logic                        s_ready   
 );
 
-typedef enum {FILL_XMEM, WAIT_ACCEPT, WAIT_FETCH, DONE} fsm;
+typedef enum logic [2:0] {FILL_XMEM, WAIT_ACCEPT, WAIT_FETCH, DONE} fsm;
 fsm state;
 
 logic [$clog2(X_SIZE)-1:0] xmem_tracker;

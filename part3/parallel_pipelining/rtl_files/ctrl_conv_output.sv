@@ -29,7 +29,7 @@ module ctrl_conv_output
 logic en_pline_fsm;
 logic [$clog2(PLINE_STAGES)-1:0] init_cntr;
 
-typedef enum {IDLE, FLUSH_IN, NEXT_COMPUTE, FLUSH_OUT} fsm;
+typedef enum logic [2:0] {IDLE, FLUSH_IN, NEXT_COMPUTE, FLUSH_OUT} fsm;
 fsm state;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
