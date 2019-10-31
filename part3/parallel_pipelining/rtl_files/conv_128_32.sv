@@ -9,7 +9,7 @@ module conv_128_32
 	parameter DATA_WIDTH_F = 8, 
 	parameter X_SIZE = 128, 
 	parameter F_SIZE = 32, 
-	parameter PLINE_STAGES = 5,
+	parameter PLINE_STAGES = 6,
 	parameter ACC_SIZE = 21
 )(
 	input clk, 
@@ -36,6 +36,7 @@ logic xmem_wr_en;
 logic xmem_reset;
 logic [X_MEM_ADDR_WIDTH-1:0] load_xaddr_val;
 logic signed [DATA_WIDTH_X-1:0] xmem_data [X_SIZE-1:0];
+logic signed [DATA_WIDTH_X-1:0] xmem_data_int [F_SIZE-1:0];
 
 logic fmem_full;
 logic [F_MEM_ADDR_WIDTH-1 :0] fmem_addr;
@@ -149,14 +150,22 @@ logic signed [ACC_SIZE-1:0] adder_stage4 [(F_SIZE>>4)-1:0];
 
 // Multiplying XMEM and FMEM data
 // For parallel execution, getting values from different memory locations at the same time
-// Pipelining added after multiplier stage
+// 2 stage Pipelining added after XMEM and after multiplier stage
 
    logic reset_pline;
    assign reset_pline = (!conv_start || conv_done || reset);
 
    genvar i;
    generate for(i=0; i<F_SIZE; i++) begin : multiplier
-	assign x_mult_f_int[i] = xmem_data[i+load_xaddr_val]*fmem_data[i];  
+	always @ (posedge clk) begin
+		if (reset)
+	   		xmem_data_int[i] <= 0;
+		else
+			if (en_pline_stages)
+			xmem_data_int[i] <= xmem_data[i+load_xaddr_val];
+	end
+
+	assign x_mult_f_int[i] = xmem_data_int[i]*fmem_data[i];  
 
 	always @(posedge clk)  begin 
 		if (reset_pline) begin
@@ -172,6 +181,7 @@ logic signed [ACC_SIZE-1:0] adder_stage4 [(F_SIZE>>4)-1:0];
 
    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
    // Adding adder logic and relevant pipelining stages
+   // 4 stages added
    
    //Stage 1
    genvar j;
