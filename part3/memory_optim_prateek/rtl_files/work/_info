@@ -1,0 +1,155 @@
+m255
+K4
+z2
+!s11f MIXED_VERSIONS
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/home5/pjain/ese507_workspace/ese507_proj2/part3/parallel/rtl_files
+vconv_128_32
+Z1 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z2 !s110 1572491729
+!i10b 1
+!s100 DDA5M4:QTH2_Y60mRj:H80
+!s11b 6bl7GmX?kX34lkB@_AY[d1
+Il1V15Z<IUd8RODgmWjRCJ2
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+S1
+Z4 d/home/home5/pjain/ese507_workspace/ese507_proj2/part3/memory_optim_prateek/rtl_files
+w1572490769
+8../rtl_files/conv_128_32.sv
+F../rtl_files/conv_128_32.sv
+!i122 -1
+L0 8
+Z5 OP;L;2019.3;69
+r1
+!s85 0
+31
+Z6 !s108 1572491729.000000
+!s107 ../rtl_files/conv_128_32.sv|../rtl_files/ctrl_mem_write.sv|../rtl_files/ctrl_xmem_plus_output.sv|../rtl_files/memory.sv|../rtl_files/x_memory.sv|
+Z7 !s90 -f|../rtl_file_list|
+!i113 1
+Z8 tCvgOpt 0
+vctrl_conv_output
+R1
+!s110 1572362167
+!i10b 1
+!s100 cm_DTN1z7JAB4doVnGZSz3
+!s11b jF8AI=Vjf]kiB;HXWf2]`1
+IMPB1VA1^oZMhBhJBSn9nJ0
+R3
+S1
+R0
+w1572361971
+8../rtl_files/ctrl_conv_output.sv
+F../rtl_files/ctrl_conv_output.sv
+!i122 -1
+Z9 L0 12
+R5
+r1
+!s85 0
+31
+!s108 1572362167.000000
+!s107 ../rtl_files/conv_128_32.sv|../rtl_files/ctrl_mem_write.sv|../rtl_files/ctrl_conv_output.sv|../rtl_files/memory.sv|
+R7
+!i113 1
+R8
+vctrl_mem_write
+R1
+R2
+!i10b 1
+!s100 5Zm?k[_LGnCb[YP:L3c=<1
+!s11b ZQ91o@d^n^;A21Qb5dO@51
+I?>C93>l7hB8gJ7OP_Z4lI3
+R3
+S1
+R4
+Z10 w1572484720
+8../rtl_files/ctrl_mem_write.sv
+F../rtl_files/ctrl_mem_write.sv
+!i122 -1
+L0 8
+R5
+r1
+!s85 0
+31
+R6
+Z11 !s107 ../rtl_files/conv_128_32.sv|../rtl_files/ctrl_mem_write.sv|../rtl_files/ctrl_xmem_plus_output.sv|../rtl_files/memory.sv|../rtl_files/x_memory.sv|
+R7
+!i113 1
+R8
+vctrl_xmem_plus_output
+R1
+R2
+!i10b 1
+!s100 zhgPJg6eU?4V?P@ROVDDC0
+!s11b ^A@Y4RjzmAWaa:Z12nnX90
+I1aRg1Km?PVLRFk=O<UG?G0
+R3
+S1
+R4
+w1572491548
+8../rtl_files/ctrl_xmem_plus_output.sv
+F../rtl_files/ctrl_xmem_plus_output.sv
+!i122 -1
+R9
+R5
+r1
+!s85 0
+31
+R6
+R11
+R7
+!i113 1
+R8
+vmemory
+R1
+R2
+!i10b 1
+!s100 KT1QDR9PSHhSCY6PEBF8n2
+!s11b KcQT^bm@NdF51m7f`0=BX0
+I]`NSQSSYYQ^iU;0zbHkz>3
+R3
+S1
+R4
+R10
+8../rtl_files/memory.sv
+F../rtl_files/memory.sv
+!i122 -1
+L0 7
+R5
+r1
+!s85 0
+31
+R6
+R11
+R7
+!i113 1
+R8
+vx_memory
+R1
+R2
+!i10b 1
+!s100 Y]9z64EIzQ5f;F54][Yi_0
+!s11b OjGT]Gk[2g<M:ehU[4ZPR3
+I9MYdYj[To`W2GCe1:aUGG3
+R3
+S1
+R4
+w1572490759
+8../rtl_files/x_memory.sv
+F../rtl_files/x_memory.sv
+!i122 -1
+L0 8
+R5
+r1
+!s85 0
+31
+R6
+R11
+R7
+!i113 1
+R8
