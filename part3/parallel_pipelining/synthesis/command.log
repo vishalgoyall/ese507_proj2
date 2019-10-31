@@ -1,6 +1,6 @@
 #@ # 
 #@ # Running dc_shell Version J-2014.09-SP5-2 for amd64 -- Jul 11, 2015
-#@ # Date:   Wed Oct 30 00:50:20 2019
+#@ # Date:   Wed Oct 30 02:27:27 2019
 #@ # Run by: pjain@lab29.ece.stonybrook.edu
 #@ 
 
@@ -3763,7 +3763,7 @@ source -echo -verbose /home/home5/pjain/ese507_workspace/ese507_proj2/part3/para
 #@ # Setup: fill out the following parameters: name of clock signal, clock period (ns),
 #@ # reset signal name (if used), name of top-level module, name of source file
 #@ set CLK_NAME "clk";
-#@ set CLK_PERIOD 2
+#@ set CLK_PERIOD 0.94
 #@ set RST_NAME "reset";
 #@ set TOP_MOD_NAME "conv_128_32";
 #@ set SRC_FILE [list "../rtl_files/conv_128_32.sv" "../rtl_files/ctrl_mem_write.sv" "../rtl_files/ctrl_conv_output.sv" "../rtl_files/memory.sv"];

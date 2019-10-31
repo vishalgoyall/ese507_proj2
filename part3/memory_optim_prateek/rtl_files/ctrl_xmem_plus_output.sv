@@ -31,7 +31,7 @@ typedef enum {FILL_XMEM, WAIT_ACCEPT, WAIT_FETCH, DONE} fsm;
 fsm state;
 
 logic [$clog2(X_SIZE)-1:0] xmem_tracker;
-logic s_ready_fsm;
+logic s_ready_fsm, en_cntr;
 
 always_ff @ (posedge clk) begin
 	if (reset) begin
@@ -45,8 +45,10 @@ always_ff @ (posedge clk) begin
 		case (state)  
 			FILL_XMEM : begin
 				if (xmem_tracker == unsigned'(F_SIZE-1)) begin
-					s_ready_fsm <= 1'b0;
-					xmem_full   <= 1'b1; 
+					if (xmem_wr_en == 1'b1) begin
+						s_ready_fsm <= 1'b0;
+						xmem_full   <= 1'b1; 
+					end
 					if (conv_start == 1'b1) begin
 						m_valid <= 1'b1;
 						state   <= WAIT_ACCEPT;
@@ -98,13 +100,17 @@ assign xmem_wr_en = (xmem_tracker == unsigned'(X_SIZE-1)) ? 1'b0 : s_valid && s_
 //+++++++++++++++++++++++++++++++++++++++++++++
 //Tracker to keep count of no of convolutions
 //Tracker is paused once max count is reached
-
 always_ff @(posedge clk) begin
 	if (reset | conv_done) begin
 		xmem_tracker <= 0;
+		//en_cntr      <= 0;
 	end
 	else begin
-		if (xmem_wr_en == 1'b1 && xmem_tracker != unsigned'(X_SIZE-1) && !(xmem_tracker == unsigned'(F_SIZE-1) && state == FILL_XMEM))
+		//if (xmem_wr_en == 1'b1)
+		//	en_cntr <= 1'b1;
+
+		if (xmem_wr_en == 1'b1 && 
+		    xmem_tracker != unsigned'(X_SIZE-1) && !(xmem_tracker == unsigned'(F_SIZE-1) && state == FILL_XMEM))
 			xmem_tracker <= xmem_tracker + 1;
 	end
 end
