@@ -132,14 +132,14 @@ logic signed [ACC_SIZE-1:0] adder_stage4 [(F_SIZE>>4)-1:0];
 
    genvar i;
    generate for(i=0; i<F_SIZE; i++) begin : multiplier
-	always @ (posedge clk) begin
-		if (reset_pline)
-	   		xmem_data_int[i] <= 0;
-		else
-			if (en_pline_stages)
-			xmem_data_int[i] <= xmem_data[i];
-	end
-
+	//always @ (posedge clk) begin
+	//	if (reset_pline)
+	//   		xmem_data_int[i] <= 0;
+	//	else
+	//		if (en_pline_stages)
+	//		xmem_data_int[i] <= xmem_data[i];
+	//end
+	assign xmem_data_int[i] = xmem_data[i];
 	assign x_mult_f_int[i] = xmem_data_int[i]*fmem_data[i];  
 
 	always @(posedge clk)  begin 
@@ -176,39 +176,40 @@ logic signed [ACC_SIZE-1:0] adder_stage4 [(F_SIZE>>4)-1:0];
  
    //Stage 2
    generate for(j=0; j<F_SIZE>>2; j=j+1) begin : adder_stage_2
-//	   always @ (posedge clk) begin
-//		   if (reset_pline == 1'b1)
-//			   adder_stage2[j] <= 0;
-//		   else
-//			   if (en_pline_stages)
-//			   adder_stage2[j] <= adder_stage1[2*j] + adder_stage1[2*j+1]; 
-//	   end
-    assign adder_stage2[j] = adder_stage1[2*j] + adder_stage1[2*j+1]; 
+	   always @ (posedge clk) begin
+		   if (reset_pline == 1'b1)
+			   adder_stage2[j] <= 0;
+		   else
+			   if (en_pline_stages)
+			   adder_stage2[j] <= adder_stage1[2*j] + adder_stage1[2*j+1]; 
+	   end
+    //assign adder_stage2[j] = adder_stage1[2*j] + adder_stage1[2*j+1]; 
    end
    endgenerate
 
    //Stage 3
    generate for(j=0; j<F_SIZE>>3; j=j+1) begin : adder_stage_3
-	   always @ (posedge clk) begin
-		   if (reset_pline == 1'b1)
-			   adder_stage3[j] <= 0;
-		   else
-			   if (en_pline_stages)
-			   adder_stage3[j] <= adder_stage2[2*j] + adder_stage2[2*j+1]; 
-	   end
+	 //  always @ (posedge clk) begin
+	 //          if (reset_pline == 1'b1)
+	 //       	   adder_stage3[j] <= 0;
+	 //          else
+	 //       	   if (en_pline_stages)
+	 //       	   adder_stage3[j] <= adder_stage2[2*j] + adder_stage2[2*j+1]; 
+	 //  end
+   assign adder_stage3[j] = adder_stage2[2*j] + adder_stage2[2*j+1]; 
    end
    endgenerate
 
    //Stage 4
    generate for(j=0; j<F_SIZE>>4; j=j+1) begin : adder_stage_4
-	  // always @ (posedge clk) begin
-	  //         if (reset_pline == 1'b1)
-	  //      	   adder_stage4[j] <= 0;
-	  //         else
-	  //      	   if(en_pline_stages)
-	  //      	   adder_stage4[j] <= adder_stage3[2*j] + adder_stage3[2*j+1]; 
-	  // end
-   assign adder_stage4[j] = adder_stage3[2*j] + adder_stage3[2*j+1]; 
+	   always @ (posedge clk) begin
+	           if (reset_pline == 1'b1)
+	        	   adder_stage4[j] <= 0;
+	           else
+	        	   if(en_pline_stages)
+	        	   adder_stage4[j] <= adder_stage3[2*j] + adder_stage3[2*j+1]; 
+	   end
+   //assign adder_stage4[j] = adder_stage3[2*j] + adder_stage3[2*j+1]; 
    end
    endgenerate
 
