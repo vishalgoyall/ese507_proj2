@@ -2,7 +2,7 @@
 ++ Directory Description
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 1. rtl_files/: Contains design files
-	a. conv_8_4.sv : 
+	a. conv_128_32.sv : 
 		Top Module file for part1
 	b. ctrl_mem_write.sv :
 		Control Module to generate signals for mem write and AXI input
@@ -15,9 +15,29 @@
 	File list of all RTL design files
 
 3. verif/: Contains tb files 
-	a. *.hex files and part1_*_tb.sv files picked from instructor's path.
-	b. run_simple_tb.sh : shell script to compile simple tb file and run sims using simple tb
+	a. *.hex files and part2_*_tb.sv files picked from instructor's path.
+	b. run_simple_tb.sh : shell script to compile simple tb modules and run sims using simple part2 tb
 		>>./run_simple_tb.sh <gui/non>   [Add gui to run in gui mode, else run in bash mode]
-	c. run_random_tb.sh : shell script to compile random tb file and run sims using random tb
+	c. run_random_tb.sh : shell script to compile random tb modules and run sims using random part2 tb
 		>>./run_random_tb.sh <gui/non> <seed_value>  [Add different seeds to randomize]
+
+4. synthesis/: Contains synthesis scripts and log files
+	a. runsynth.tcl - script to run synthesis. Clock period changes are done in this script.
+	b. setupdc.tcl  - library paths
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
+++ Steps to run simulations
+++++++++++++++++++++++++++++++++++++++++++++++++++
+> cd verif
+Run any of the following commands to fire testbench
+1. > cd ./run_simple_tb.sh non    -- Runs simple tb in bash mode
+2. > cd ./run_simple_tb.sh gui    -- Runs simple tb in gui mode
+3. > cd ./run_random_tb.sh non 2  -- Runs random tb in bash mode with seed value 2
+4. > cd ./run_random_tb.sh gui 3  -- RUns random tb in gui mode with seed value 3
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
+++ Steps to run synthesis
+++++++++++++++++++++++++++++++++++++++++++++++++++
+> cd synthesis
+> dc_shell -f runsynth.tcl | tee logfile.txt   --Runs synthesis script and stores log in .txt file
 
