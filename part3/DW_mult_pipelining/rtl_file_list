@@ -4,4 +4,4 @@
 ../rtl_files/memory.sv
 ../rtl_files/ctrl_xmem_plus_output.sv
 ../rtl_files/ctrl_mem_write.sv
-../rtl_files/conv_128_32.sv
+../rtl_files/conv_128_32_opt.sv

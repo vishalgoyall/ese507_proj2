@@ -7,7 +7,7 @@
 // Added pipelined multiplier modules by DesignWare to increase pipelining
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-module conv_128_32 #(
+module conv_128_32_opt #(
 	parameter DATA_WIDTH_X = 8, 
 	parameter DATA_WIDTH_F = 8, 
 	parameter X_SIZE = 128, 

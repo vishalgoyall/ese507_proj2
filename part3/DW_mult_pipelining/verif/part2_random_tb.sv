@@ -25,7 +25,7 @@ module tbench2();
     always #5 clk = ~clk;
 
     // Instantiate DUT
-    conv_128_32 dut (.clk(clk), .reset(reset), 
+    conv_128_32_opt dut (.clk(clk), .reset(reset), 
                   .s_data_in_x(s_data_in_x),   .s_valid_x(s_valid_x), .s_ready_x(s_ready_x),
                   .s_data_in_f(s_data_in_f),   .s_valid_f(s_valid_f), .s_ready_f(s_ready_f),
                   .m_data_out_y(m_data_out_y), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y));
