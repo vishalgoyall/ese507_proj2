@@ -4,6 +4,7 @@
 // Description: This is the top level module for convolution of X (128) and F (32)
 // Input X memory and Output overlapped in execution
 // Pipelining Stages have been added to increase speed of operation
+// Added pipelined multiplier modules by DesignWare to increase pipelining
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 module conv_128_32 #(

@@ -1,7 +1,8 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ESE 507 : Project 1 (Convolution)
 // Authors : Prateek Jain and Vishal Goyal
-// Description: This is the memory module being used to store X and F vectors
+// Description: This is the memory module being used to store F vectors
+// This module acts as a de-serializer to output the data parallely
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 module memory(clk, data_in, data_out, addr, wr_en);
@@ -20,6 +21,7 @@ module memory(clk, data_in, data_out, addr, wr_en);
             mem[addr] <= data_in;
     end
 
+// outputting all registers' outputs in a single cycle
 assign data_out = mem;
 
 endmodule
