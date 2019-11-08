@@ -2,10 +2,10 @@
 # Setup: fill out the following parameters: name of clock signal, clock period (ns),
 # reset signal name (if used), name of top-level module, name of source file
 set CLK_NAME "clk";
-set CLK_PERIOD 0.8;
+set CLK_PERIOD 0.79;
 set RST_NAME "reset";
-set TOP_MOD_NAME "conv_128_32";
-set SRC_FILE [list "../rtl_files/ctrl_mem_write.sv" "../rtl_files/ctrl_xmem_plus_output.sv" "../rtl_files/memory.sv" "../rtl_files/x_memory.sv" "/usr/local/synopsys/syn/dw/sim_ver/DW02_mult.v" "/usr/local/synopsys/syn/dw/sim_ver/DW_mult_pipe.v" "../rtl_files/conv_128_32.sv" ];
+set TOP_MOD_NAME "conv_128_32_opt";
+set SRC_FILE [list "../rtl_files/ctrl_mem_write.sv" "../rtl_files/ctrl_xmem_plus_output.sv" "../rtl_files/memory.sv" "../rtl_files/x_memory.sv" "/usr/local/synopsys/syn/dw/sim_ver/DW02_mult.v" "/usr/local/synopsys/syn/dw/sim_ver/DW_mult_pipe.v" "../rtl_files/conv_128_32_opt.sv" ];
 
 # If you have multiple source files, change the line above to list them all like this:
 # set SRC_FILE [list "file1.sv" "file2.sv"];
